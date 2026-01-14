@@ -34,6 +34,13 @@ Rails.application.routes.draw do
             get :tree
           end
         end
+        resources :form_submissions, only: [ :index, :show, :create, :update, :destroy ] do
+          member do
+            post :submit
+            post :reopen
+          end
+          resources :form_submission_values, only: [ :create ]
+        end
       end
     end
   end

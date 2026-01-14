@@ -3,6 +3,7 @@ class ApplicationController < ActionController::Base
   allow_browser versions: :modern
   protect_from_forgery with: :null_session
   before_action :set_current_tenant
+  rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
 
   include OrderableParams
 
@@ -26,5 +27,11 @@ class ApplicationController < ActionController::Base
 
   def current_tenant
     Current.tenant
+  end
+
+  def record_not_found
+    render json: {
+      error: "Record not found"
+    }, status: :not_found
   end
 end

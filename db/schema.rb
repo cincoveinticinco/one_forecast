@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_01_14_133115) do
+ActiveRecord::Schema[8.0].define(version: 2026_01_14_162717) do
   create_table "countries", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "code", null: false
     t.string "name", null: false
@@ -47,6 +47,26 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_14_133115) do
     t.index ["parent_field_id"], name: "index_form_fields_on_parent_field_id"
   end
 
+  create_table "form_submission_values", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "form_submission_id", null: false
+    t.bigint "form_field_id", null: false
+    t.json "value", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["form_field_id"], name: "index_form_submission_values_on_form_field_id"
+    t.index ["form_submission_id"], name: "index_form_submission_values_on_form_submission_id"
+  end
+
+  create_table "form_submissions", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "form_template_id", null: false
+    t.string "status", null: false
+    t.datetime "submitted_at"
+    t.datetime "deleted_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["form_template_id"], name: "index_form_submissions_on_form_template_id"
+  end
+
   create_table "form_templates", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "tenant_id", null: false
     t.string "name", null: false
@@ -69,5 +89,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_14_133115) do
 
   add_foreign_key "form_fields", "form_fields", column: "parent_field_id"
   add_foreign_key "form_fields", "form_templates"
+  add_foreign_key "form_submission_values", "form_fields"
+  add_foreign_key "form_submission_values", "form_submissions"
+  add_foreign_key "form_submissions", "form_templates"
   add_foreign_key "form_templates", "tenants"
 end
