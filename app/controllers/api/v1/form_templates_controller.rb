@@ -3,7 +3,7 @@ class Api::V1::FormTemplatesController < ApplicationController
   def index
     order_hash = safe_order_hash(
       model: FormTemplate,
-      default: ["created_at"],
+      default: [ "created_at" ],
       default_dir: "desc"
     )
     puts "Order Hash: #{order_hash.inspect}"
@@ -16,7 +16,7 @@ class Api::V1::FormTemplatesController < ApplicationController
     template = current_tenant.form_templates.find(params[:id])
     render json: template, status: :ok
   end
-  
+
   # POST /api/v1/form_templates
   def create
     template = current_tenant.form_templates.new(form_template_params)
@@ -116,7 +116,7 @@ class Api::V1::FormTemplatesController < ApplicationController
     template.archived_at = nil
     if template.save
       render json: template, status: :ok
-    else 
+    else
       render json: { errors: template.errors.full_messages }, status: :unprocessable_entity
     end
   end
@@ -131,5 +131,4 @@ class Api::V1::FormTemplatesController < ApplicationController
       :access_type
     )
   end
-
 end

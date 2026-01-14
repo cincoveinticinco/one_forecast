@@ -7,7 +7,6 @@ class Api::V1::TenantsController < ApplicationController
     tenant = Tenant.find(params[:id])
     render json: tenant
   end
-  
   def create
     tenant = Tenant.new(tenant_params)
     if tenant.save
@@ -37,5 +36,4 @@ class Api::V1::TenantsController < ApplicationController
   def tenant_params
     params.require(:tenant).permit(:name)
   end
-  
 end
