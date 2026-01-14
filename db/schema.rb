@@ -1,0 +1,73 @@
+# This file is auto-generated from the current state of the database. Instead
+# of editing this file, please use the migrations feature of Active Record to
+# incrementally modify your database, and then regenerate this schema definition.
+#
+# This file is the source Rails uses to define your schema when running `bin/rails
+# db:schema:load`. When creating a new database, `bin/rails db:schema:load` tends to
+# be faster and is potentially less error prone than running all of your
+# migrations from scratch. Old migrations may fail to apply correctly if those
+# migrations use external dependencies or application code.
+#
+# It's strongly recommended that you check this file into your version control system.
+
+ActiveRecord::Schema[8.0].define(version: 2026_01_14_133115) do
+  create_table "countries", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "code", null: false
+    t.string "name", null: false
+    t.string "dial_code", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["code"], name: "index_countries_on_code", unique: true
+  end
+
+  create_table "form_fields", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "form_template_id", null: false
+    t.bigint "parent_field_id"
+    t.string "key", null: false
+    t.text "label", null: false
+    t.string "field_type", null: false
+    t.string "block_type"
+    t.boolean "required", default: false, null: false
+    t.integer "order_index", default: 0, null: false
+    t.string "placeholder"
+    t.text "help_text"
+    t.json "options"
+    t.json "validations"
+    t.json "visibility_rules"
+    t.json "settings"
+    t.json "mapping"
+    t.boolean "is_system", default: false, null: false
+    t.boolean "is_active", default: true, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["field_type"], name: "index_form_fields_on_field_type"
+    t.index ["form_template_id", "key"], name: "index_form_fields_on_form_template_id_and_key", unique: true
+    t.index ["form_template_id", "parent_field_id", "order_index"], name: "idx_on_form_template_id_parent_field_id_order_index_da13d7bc01"
+    t.index ["form_template_id"], name: "index_form_fields_on_form_template_id"
+    t.index ["parent_field_id"], name: "index_form_fields_on_parent_field_id"
+  end
+
+  create_table "form_templates", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "tenant_id", null: false
+    t.string "name", null: false
+    t.string "slug", null: false
+    t.string "template_type", null: false
+    t.string "status", null: false
+    t.string "access_type", null: false
+    t.datetime "published_at"
+    t.datetime "archived_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tenant_id"], name: "index_form_templates_on_tenant_id"
+  end
+
+  create_table "tenants", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_foreign_key "form_fields", "form_fields", column: "parent_field_id"
+  add_foreign_key "form_fields", "form_templates"
+  add_foreign_key "form_templates", "tenants"
+end
