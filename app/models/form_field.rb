@@ -2,6 +2,7 @@ class FormField < ApplicationRecord
   # Associations
   belongs_to :form_template
   belongs_to :parent_field, class_name: "FormField", optional: true
+  has_many :form_submission_values
 
   has_many :child_fields,
            class_name: "FormField",

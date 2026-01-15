@@ -36,6 +36,7 @@ Rails.application.routes.draw do
         end
         resources :form_submissions, only: [ :index, :show, :create, :update, :destroy ] do
           member do
+            get :tree
             post :submit
             post :reopen
           end

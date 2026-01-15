@@ -1,4 +1,7 @@
 class Api::V1::FormFieldsController < ApplicationController
+  def initialize
+    @fields_service = FormFields::FormFieldService.new
+  end
   # GET /api/v1/form_templates/:form_template_id/form_fields
   def index
     template = current_tenant.form_templates.find(params[:form_template_id])
@@ -9,20 +12,7 @@ class Api::V1::FormFieldsController < ApplicationController
   def tree
     template = current_tenant.form_templates.find(params[:form_template_id])
     fields = template.form_fields.order(:parent_field_id, :order_index, :id)
-
-    json = fields.as_json.map { |p| compact_hash(p) }
-    children_by_parent = json.group_by { |f| f["parent_field_id"] }
-
-    attach_children = lambda do |node|
-      kids = Array(children_by_parent[node["id"]])
-      return if kids.empty?
-
-      node["children"] = kids.sort_by { |c| [ c["order_index"].to_i, c["id"] ] }
-      node["children"].each { |child| attach_children.call(child) }
-    end
-
-    parents = Array(children_by_parent[nil]).sort_by { |p| [ p["order_index"].to_i, p["id"] ] }
-    parents.each { |p| attach_children.call(p) }
+    parents = @fields_service.get_tree(fields)
 
     render json: parents, status: :ok
   end
@@ -76,13 +66,7 @@ class Api::V1::FormFieldsController < ApplicationController
 
   private
 
-  def compact_hash(hash)
-    remove_colums = [ "mapping", "is_system", "is_active", "created_at", "updated_at" ]
-    hash.each_with_object({}) do |(k, v), acc|
-      next if v.nil? || remove_colums.include?(k)
-      acc[k] = v.is_a?(Hash) ? compact_hash(v) : v
-    end
-  end
+  
 
   def form_field_params
     params.require(:form_field).permit(

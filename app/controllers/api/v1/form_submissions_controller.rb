@@ -1,6 +1,7 @@
 class Api::V1::FormSubmissionsController < ApplicationController
   before_action :set_form_template
-  before_action :set_form_submission, only: [ :show, :update, :destroy, :reopen, :submit ]
+  before_action :set_form_submission, except: [:index, :create]
+
   def initialize
     @submission_service = FormSubmissions::FormSubmissionService.new
   end
@@ -59,6 +60,17 @@ class Api::V1::FormSubmissionsController < ApplicationController
   rescue ActiveRecord::RecordInvalid => e
     render json: { errors: e.record.errors.full_messages },
           status: :unprocessable_entity
+  end
+
+  def tree
+    fields_service = FormFields::FormFieldService.new
+    fields = @form_template.form_fields.order(:parent_field_id, :order_index, :id)
+    parents = fields_service.get_tree(
+      fields,
+      @form_submission
+    )
+
+    render json: parents, status: :ok
   end
   private
 
