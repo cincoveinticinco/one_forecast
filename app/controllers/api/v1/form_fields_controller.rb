@@ -11,8 +11,7 @@ class Api::V1::FormFieldsController < ApplicationController
   # GET /api/v1/form_templates/:form_template_id/form_fields/tree
   def tree
     template = current_tenant.form_templates.find(params[:form_template_id])
-    fields = template.form_fields.order(:parent_field_id, :order_index, :id)
-    parents = @fields_service.get_tree(fields)
+    parents = @fields_service.get_tree(template)
 
     render json: parents, status: :ok
   end

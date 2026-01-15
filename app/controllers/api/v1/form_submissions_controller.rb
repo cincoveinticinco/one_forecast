@@ -64,9 +64,8 @@ class Api::V1::FormSubmissionsController < ApplicationController
 
   def tree
     fields_service = FormFields::FormFieldService.new
-    fields = @form_template.form_fields.order(:parent_field_id, :order_index, :id)
     parents = fields_service.get_tree(
-      fields,
+      @form_template,
       @form_submission
     )
 
