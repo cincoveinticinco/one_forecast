@@ -59,7 +59,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_14_162717) do
 
   create_table "form_submissions", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "form_template_id", null: false
-    t.string "status", null: false
+    t.string "status", default: "draft", null: false
     t.datetime "submitted_at"
     t.datetime "deleted_at"
     t.datetime "created_at", null: false
