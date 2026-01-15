@@ -39,7 +39,7 @@ class FormSubmissionSerializer
       values: @form_submission.form_submission_values.map do |value|
         {
           id: value.id,
-          field_id: value.form_field_id,
+          form_field_id: value.form_field_id,
           value: value.value
         }
       end

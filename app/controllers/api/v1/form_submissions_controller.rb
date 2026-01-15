@@ -1,7 +1,10 @@
 class Api::V1::FormSubmissionsController < ApplicationController
   before_action :set_form_template
   before_action :set_form_submission, only: [ :show, :update, :destroy, :reopen, :submit ]
-
+  def initialize
+    @submission_service = FormSubmissions::FormSubmissionService.new
+  end
+  
   def index
     form_submissions = @form_template.form_submissions.where(deleted_at: nil)
 
@@ -27,7 +30,7 @@ class Api::V1::FormSubmissionsController < ApplicationController
   end
 
   def update
-    if @form_submission.update(form_submission_params)
+    if @submission_service.update_submission(@form_submission, form_submission_params)
       render json: FormSubmissionSerializer.new(@form_submission, view: :detailed).as_json
     else
       render json: { errors: @form_submission.errors.full_messages }, status: :unprocessable_entity
@@ -74,7 +77,6 @@ class Api::V1::FormSubmissionsController < ApplicationController
         :id,
         :form_field_id,
         :value,
-        :_destroy
       ]
     )
   end
