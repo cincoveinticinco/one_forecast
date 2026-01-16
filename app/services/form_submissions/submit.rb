@@ -1,7 +1,9 @@
 module FormSubmissions
   class Submit < BaseTransition
+    class MissingRequiredFields < StandardError; end
     def call
       validate!
+      validate_required_fields!
 
       update!(
         status: "submitted",
@@ -18,6 +20,24 @@ module FormSubmissions
 
       raise InvalidTransition,
         "FormSubmission cannot be submitted from #{form_submission.status}"
+    end
+
+    def validate_required_fields!
+      missing_fields = []
+
+      form_submission.form_template.form_fields.each do |field|
+        next unless field.required?
+
+        value = form_submission.form_submission_values.find_by(form_field: field)
+
+        if value.nil? || value.value.blank?
+          missing_fields << field.label
+        end
+      end
+      unless missing_fields.empty?
+        raise MissingRequiredFields,
+          "Missing required fields: #{missing_fields.join(', ')}"
+      end
     end
   end
 end
