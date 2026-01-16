@@ -5,18 +5,9 @@ class ApplicationController < ActionController::Base
   before_action :set_current_tenant
 
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
-  rescue_from ActiveRecord::RecordInvalid do |e|
-    render json: { errors: e.record.errors.full_messages }, status: :unprocessable_entity
-  end
-  rescue_from FormSubmissions::BaseTransition::InvalidTransition do |e|
-    render json: { error: e.message }, status: :unprocessable_entity
-  end
-  rescue_from MissingRequiredFields do |e|
-    render json: {
-      error: e.message,
-      missing_fields: e.missing_fields
-    }, status: :unprocessable_entity
-  end
+  rescue_from ActiveRecord::RecordInvalid, with: :record_invalid
+  rescue_from FormSubmissions::BaseTransition::InvalidTransition, with: :invalid_transition
+  rescue_from MissingRequiredFields, with: :missing_required_fields
 
   include OrderableParams
 
@@ -46,5 +37,24 @@ class ApplicationController < ActionController::Base
     render json: {
       error: "Record not found"
     }, status: :not_found
+  end
+
+  def record_invalid
+    render json: {
+      errors: e.record.errors.full_messages
+    }, status: :unprocessable_entity
+  end
+
+  def invalid_transition(e)
+    render json: {
+      error: e.message
+    }, status: :unprocessable_entity
+  end
+  
+  def missing_required_fields(e)
+    render json: {
+      error: e.message,
+      missing_fields: e.missing_fields
+    }, status: :unprocessable_entity
   end
 end
