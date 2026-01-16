@@ -46,22 +46,11 @@ class Api::V1::FormSubmissionsController < ApplicationController
   def submit
     submission = FormSubmissions::Submit.new(@form_submission).call
     render json: FormSubmissionSerializer.new(submission).as_json
-  rescue FormSubmissions::BaseTransition::InvalidTransition => e
-    render json: { error: e.message }, status: :unprocessable_entity
-  rescue ActiveRecord::RecordInvalid => e
-    render json: { errors: e.record.errors.full_messages }, status: :unprocessable_entity
-  rescue FormSubmissions::Submit::MissingRequiredFields => e
-    render json: { error: e.message }, status: :unprocessable_entity
   end
 
   def reopen
     submission = FormSubmissions::Reopen.new(@form_submission).call
     render json: FormSubmissionSerializer.new(submission).as_json
-  rescue FormSubmissions::BaseTransition::InvalidTransition => e
-    render json: { error: e.message }, status: :unprocessable_entity
-  rescue ActiveRecord::RecordInvalid => e
-    render json: { errors: e.record.errors.full_messages },
-          status: :unprocessable_entity
   end
 
   def tree

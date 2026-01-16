@@ -3,7 +3,20 @@ class ApplicationController < ActionController::Base
   allow_browser versions: :modern
   protect_from_forgery with: :null_session
   before_action :set_current_tenant
+
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
+  rescue_from ActiveRecord::RecordInvalid do |e|
+    render json: { errors: e.record.errors.full_messages }, status: :unprocessable_entity
+  end
+  rescue_from FormSubmissions::BaseTransition::InvalidTransition do |e|
+    render json: { error: e.message }, status: :unprocessable_entity
+  end
+  rescue_from MissingRequiredFields do |e|
+    render json: {
+      error: e.message,
+      missing_fields: e.missing_fields
+    }, status: :unprocessable_entity
+  end
 
   include OrderableParams
 

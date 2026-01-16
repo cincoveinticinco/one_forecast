@@ -1,6 +1,6 @@
 module FormSubmissions
+  
   class Submit < BaseTransition
-    class MissingRequiredFields < StandardError; end
     def call
       validate!
       validate_required_fields!
@@ -34,10 +34,7 @@ module FormSubmissions
           missing_fields << field.label
         end
       end
-      unless missing_fields.empty?
-        raise MissingRequiredFields,
-          "Missing required fields: #{missing_fields.join(', ')}"
-      end
+      raise MissingRequiredFields.new(missing_fields) unless missing_fields.empty?
     end
   end
 end
