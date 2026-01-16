@@ -25,14 +25,16 @@ module FormSubmissions
     def validate_required_fields!
       missing_fields = []
 
+      values_by_field_id =
+        form_submission
+          .form_submission_values
+          .group_by(&:form_field_id)
+          
       form_submission.form_template.form_fields.each do |field|
         next unless field.required?
+        values = values_by_field_id[field.id] || []
 
-        value = form_submission.form_submission_values.find_by(form_field: field)
-
-        if value.nil? || value.value.blank?
-          missing_fields << field.label
-        end
+        missing_fields << field.label if values.blank?
       end
       raise MissingRequiredFields.new(missing_fields) unless missing_fields.empty?
     end
