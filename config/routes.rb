@@ -40,8 +40,8 @@ Rails.application.routes.draw do
             post :submit
             post :reopen
           end
-          resources :form_submission_values, only: [ :create ]
         end
+        resources :form_submission_values, only: [ :index, :show, :create ]
       end
     end
   end
