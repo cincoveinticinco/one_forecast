@@ -1,12 +1,11 @@
 class Api::V1::FormTemplatesController < ApplicationController
   include Pagy::Backend
-  before_action :set_current_tenant, only: [:edit, :update, :show, :destroy]
+  before_action :set_current_tenant, only: [:index, :update, :show, :destroy]
   before_action :set_template, only: [:show, :update, :destroy, :publish, :unpublish, :archive, :restore]
 
   def index
-    tenant = Tenant.find(params[:tenant_id])
     query = FormTemplates::IndexQuery.new(
-      scope: tenant.form_templates,
+      scope: @tenant.form_templates,
       params: params
     )
     pagy, form_templates = pagy(
@@ -26,7 +25,7 @@ class Api::V1::FormTemplatesController < ApplicationController
   end
 
   def create
-    template = current_tenant.form_templates.new(form_template_params)
+    template = @tenant.form_templates.new(form_template_params)
     if template.save
       render json: template, status: :created
     else
@@ -116,10 +115,10 @@ class Api::V1::FormTemplatesController < ApplicationController
 
   private
   def set_current_tenant
-    Current.tenant = Tenant.find(params[:tenant_id])
+     @tenant = Tenant.find(params[:tenant_id])
   end
   def set_template
-    @template = current_tenant.form_templates.find(params[:id])
+    @template = @tenant.form_templates.find(params[:id])
   end
   def form_template_params
     raw = params.require(:form_template).permit(
