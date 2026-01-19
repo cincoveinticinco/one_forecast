@@ -65,7 +65,7 @@ class Api::V1::FormSubmissionsController < ApplicationController
   private
 
   def set_form_template
-    @form_template = FormTemplate.friendly.find(params[:form_template_slug])
+    @form_template = FormTemplate.find(params[:form_template_id])
   end
 
   def set_form_submission

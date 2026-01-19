@@ -111,8 +111,6 @@ GEM
     erubi (1.13.1)
     et-orbi (1.4.0)
       tzinfo
-    friendly_id (5.5.1)
-      activerecord (>= 4.0.0)
     fugit (1.12.1)
       et-orbi (~> 1.4)
       raabro (~> 1.4)
@@ -363,7 +361,6 @@ DEPENDENCIES
   capybara
   debug
   dotenv-rails
-  friendly_id (~> 5.5.0)
   importmap-rails
   jbuilder
   kamal

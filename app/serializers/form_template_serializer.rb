@@ -16,6 +16,7 @@ class FormTemplateSerializer
   def serialize_collection
     return @form_templates.map do |template|
       {
+        id: template.id,
         name: template.name,
         status: template.status,
         template_type: template.template_type,
@@ -28,6 +29,7 @@ class FormTemplateSerializer
   end
   def serialize_single
     {
+      id: @form_templates.id,
       name: @form_templates.name,
       status: @form_templates.status,
       template_type: @form_templates.template_type,

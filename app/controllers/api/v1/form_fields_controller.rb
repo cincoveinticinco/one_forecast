@@ -4,13 +4,13 @@ class Api::V1::FormFieldsController < ApplicationController
   end
   # GET /api/v1/form_templates/:form_template_id/form_fields
   def index
-    template = current_tenant.form_templates.friendly.find(params[:form_template_slug])
+    template = current_tenant.form_templates.find(params[:form_template_id])
     fields = template.form_fields.order(:parent_field_id, :order_index, :id)
     render json: fields, status: :ok
   end
   # GET /api/v1/form_templates/:form_template_id/form_fields/tree
   def tree
-    template = current_tenant.form_templates.friendly.find(params[:form_template_slug])
+    template = current_tenant.form_templates.find(params[:form_template_id])
     parents = @fields_service.get_tree(template)
 
     render json: parents, status: :ok
@@ -18,7 +18,7 @@ class Api::V1::FormFieldsController < ApplicationController
 
   # POST /api/v1/form_templates/:form_template_id/form_fields
   def create
-    template = current_tenant.form_templates.friendly.find(params[:form_template_slug])
+    template = current_tenant.form_templates.find(params[:form_template_id])
     return unless validate_template_modifiable(template)
     field = template.form_fields.new(form_field_params)
 
@@ -45,7 +45,7 @@ class Api::V1::FormFieldsController < ApplicationController
 
   # DELETE /api/v1/form_templates/:form_template_id/form_fields/:id
   def destroy
-    template = current_tenant.form_templates.friendly.find(params[:form_template_slug])
+    template = current_tenant.form_templates.find(params[:form_template_id])
     return unless validate_template_modifiable(template)
     field = template.form_fields.find(params[:id])
     field.destroy
@@ -53,7 +53,7 @@ class Api::V1::FormFieldsController < ApplicationController
   end
 
   def update
-    template = current_tenant.form_templates.friendly.find(params[:form_template_slug])
+    template = current_tenant.form_templates.find(params[:form_template_id])
     return unless validate_template_modifiable(template)
     field = template.form_fields.find(params[:id])
     if field.update(form_field_params)

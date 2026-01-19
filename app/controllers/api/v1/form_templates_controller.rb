@@ -16,7 +16,7 @@ class Api::V1::FormTemplatesController < ApplicationController
 
   # GET /api/v1/form_templates/:id
   def show
-    template = FormTemplateSerializer.new(current_tenant.form_templates.friendly.find(params[:slug])).as_json
+    template = FormTemplateSerializer.new(current_tenant.form_templates.find(params[:id])).as_json
     render json: template, status: :ok
   end
 
@@ -36,7 +36,7 @@ class Api::V1::FormTemplatesController < ApplicationController
 
   # PUT /api/v1/form_templates/:id
   def update
-    template = current_tenant.form_templates.friendly.find(params[:slug])
+    template = current_tenant.form_templates.find(params[:id])
     if template.status != "draft"
       return render json: { error: "Only draft templates can be updated" }, status: :unprocessable_entity
     end
@@ -49,14 +49,14 @@ class Api::V1::FormTemplatesController < ApplicationController
 
   # DELETE /api/v1/form_templates/:id
   def destroy
-    template = current_tenant.form_templates.friendly.find(params[:slug])
+    template = current_tenant.form_templates.find(params[:id])
     template.destroy
     head :no_content
   end
 
   # POST /api/v1/form_templates/:id/publish
   def publish
-    template = current_tenant.form_templates.friendly.find(params[:slug])
+    template = current_tenant.form_templates.find(params[:id])
     if template.published_status?
       return render json: { error: "Template is already published" }, status: :unprocessable_entity
     end
@@ -75,7 +75,7 @@ class Api::V1::FormTemplatesController < ApplicationController
 
   # POST /api/v1/form_templates/:id/unpublish
   def unpublish
-    template = current_tenant.form_templates.friendly.find(params[:slug])
+    template = current_tenant.form_templates.find(params[:id])
     if template.draft_status?
       return render json: { error: "Template is already in draft status" }, status: :unprocessable_entity
     end
@@ -93,7 +93,7 @@ class Api::V1::FormTemplatesController < ApplicationController
 
   # POST /api/v1/form_templates/:id/archive
   def archive
-    template = current_tenant.form_templates.friendly.find(params[:slug])
+    template = current_tenant.form_templates.find(params[:id])
     if template.archived_status?
       return render json: { error: "Template is already archived" }, status: :unprocessable_entity
     end
@@ -108,7 +108,7 @@ class Api::V1::FormTemplatesController < ApplicationController
 
   # POST /api/v1/form_templates/:id/restore
   def restore
-    template = current_tenant.form_templates.friendly.find(params[:slug])
+    template = current_tenant.form_templates.find(params[:id])
     if template.draft_status?
       return render json: { error: "Template is already in draft status" }, status: :unprocessable_entity
     end
