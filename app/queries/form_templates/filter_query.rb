@@ -1,5 +1,5 @@
 module FormTemplates
-  class IndexQuery
+  class FilterQuery
     ALLOWED_ORDER_COLUMNS = %w[
       created_at
       updated_at

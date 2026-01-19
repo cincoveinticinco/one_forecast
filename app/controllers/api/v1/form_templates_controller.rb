@@ -4,7 +4,7 @@ class Api::V1::FormTemplatesController < ApplicationController
   before_action :set_template, except: [:index, :create]
 
   def index
-    query = FormTemplates::IndexQuery.new(
+    query = FormTemplates::FilterQuery.new(
       scope: @tenant.form_templates,
       params: params
     )
