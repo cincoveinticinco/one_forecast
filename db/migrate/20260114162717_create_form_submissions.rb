@@ -2,7 +2,7 @@ class CreateFormSubmissions < ActiveRecord::Migration[8.0]
   def change
     create_table :form_submissions do |t|
       t.references :form_template, null: false, foreign_key: true
-      t.string :status, null: false, default: "draft"
+      t.string :status, null: false
 
       t.datetime :submitted_at
       t.datetime :deleted_at

@@ -11,4 +11,17 @@ class FormTemplate < ApplicationRecord
   # Validations
   validates :name, :slug, presence: true
   validates :slug, uniqueness: { scope: :tenant_id }
+  validate :only_draft_can_be_updated, on: :update
+
+  TEMPLATE_TYPES = template_types.keys
+  STATUSES       = statuses.keys
+  ACCESS_TYPES   = access_types.keys
+
+  private
+
+  def only_draft_can_be_updated
+    return if draft?
+
+    errors.add(:base, "Only draft templates can be updated")
+  end
 end

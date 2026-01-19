@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_01_19_172136) do
+ActiveRecord::Schema[8.0].define(version: 2026_01_19_192553) do
   create_table "countries", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "code", null: false
     t.string "name", null: false
@@ -72,7 +72,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_19_172136) do
     t.string "name", null: false
     t.string "slug", null: false
     t.string "template_type", null: false
-    t.string "status", null: false
+    t.string "status", default: "draft", null: false
     t.string "access_type", null: false
     t.datetime "published_at"
     t.datetime "archived_at"

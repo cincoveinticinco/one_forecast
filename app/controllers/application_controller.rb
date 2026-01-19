@@ -4,32 +4,17 @@ class ApplicationController < ActionController::Base
   # Only allow modern browsers supporting webp images, web push, badges, import maps, CSS nesting, and CSS :has.
   allow_browser versions: :modern
   protect_from_forgery with: :null_session
-  before_action :set_current_tenant
 
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
   rescue_from ActiveRecord::RecordInvalid, with: :record_invalid
   rescue_from FormSubmissions::BaseTransition::InvalidTransition, with: :invalid_transition
   rescue_from MissingRequiredFields, with: :missing_required_fields
+  rescue_from Pagy::OverflowError, with: :handle_pagy_overflow_error
+  rescue_from InvalidEnumFilter, with: :invalid_enum_filter
 
   include OrderableParams
 
   private
-
-  def set_current_tenant
-    # For development/testing purposes only
-    tenant = Tenant.find(1)
-    # tenant_id = request.headers["X-Tenant-ID"]
-
-    # return render(json: { error: "X-Tenant-ID header is required" }, status: :bad_request) if tenant_id.blank?
-
-    # tenant = Tenant.find_by(id: tenant_id)
-    # return render(json: { error: "Tenant not found" }, status: :not_found) if tenant.nil?
-
-    # allowed = TenantMembership.exists?(tenant_id: tenant.id, user_id: current_user.id)
-    # return render(json: { error: "Forbidden for this tenant" }, status: :forbidden) unless allowed
-
-    Current.tenant = tenant
-  end
 
   def current_tenant
     Current.tenant
@@ -60,11 +45,37 @@ class ApplicationController < ActionController::Base
     }, status: :unprocessable_entity
   end
 
+  def handle_pagy_overflow_error(e)
+    render json: {
+      error: e.message,
+    }, status: :unprocessable_entity
+  end
+
+  def invalid_enum_filter(e)
+    render json: {
+      error: "Invalid enum value",
+      field: e.field,
+      invalid_values: e.invalid_values,
+      allowed_values: e.allowed_values
+    }, status: :unprocessable_entity
+  end
+  
   def pagination_data(pagy)
     {
       page: pagy.page,
       total_pages: pagy.pages,
       total_count: pagy.count
     }
+  end
+
+  def sanitize_enum!(params, field, allowed)
+    return if params[field].blank?
+    return if allowed.include?(params[field])
+
+    raise InvalidEnumFilter.new(
+      field: field,
+      invalid_values: [params[field]],
+      allowed_values: allowed
+    )
   end
 end
