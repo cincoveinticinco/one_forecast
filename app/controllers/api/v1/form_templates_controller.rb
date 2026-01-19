@@ -1,6 +1,6 @@
 class Api::V1::FormTemplatesController < ApplicationController
   include Pagy::Backend
-  before_action :set_current_tenant, only: [:index, :update, :show, :destroy]
+  before_action :set_tenant, only: [:index, :update, :show, :destroy]
   before_action :set_template, only: [:show, :update, :destroy, :publish, :unpublish, :archive, :restore]
 
   def index
@@ -114,7 +114,7 @@ class Api::V1::FormTemplatesController < ApplicationController
   end
 
   private
-  def set_current_tenant
+  def set_tenant
      @tenant = Tenant.find(params[:tenant_id])
   end
   def set_template
