@@ -1,6 +1,6 @@
 module FormSubmissions
   
-  class Submit < BaseTransition
+  class Submit
     def call
       validate!
       validate_required_fields!

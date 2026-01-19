@@ -1,5 +1,5 @@
 module FormSubmissions
-  class Reopen < BaseTransition
+  class Reopen
     def call
       validate!
 
@@ -12,11 +12,12 @@ module FormSubmissions
     end
 
     private
-
+    attr_reader :form_submission
+    
     def validate!
       return if form_submission.reopened? || form_submission.submitted?
 
-      raise InvalidTransition,
+      raise InvalidTransitionError,
         "FormSubmission cannot be reopened from #{form_submission.status}"
     end
   end

@@ -7,7 +7,9 @@ class ApplicationController < ActionController::Base
 
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
   rescue_from ActiveRecord::RecordInvalid, with: :record_invalid
-  rescue_from FormSubmissions::BaseTransition::InvalidTransition, with: :invalid_transition
+  rescue_from ActiveRecord::RecordNotDestroyed, ActiveRecord::InvalidForeignKey, with: :record_not_destroyed
+  rescue_from InvalidTransitionError, with: :invalid_transition
+  rescue_from InvalidTransitionError, with: :invalid_transition
   rescue_from MissingRequiredFields, with: :missing_required_fields
   rescue_from Pagy::OverflowError, with: :handle_pagy_overflow_error
   rescue_from InvalidEnumFilter, with: :invalid_enum_filter
@@ -26,12 +28,21 @@ class ApplicationController < ActionController::Base
     }, status: :not_found
   end
 
-  def record_invalid
+  def record_invalid(e)
     render json: {
       errors: e.record.errors.full_messages
     }, status: :unprocessable_entity
   end
 
+  def record_not_destroyed(e)
+    record = e.record
+
+    render json: {
+      error: "Record cannot be deleted",
+      details: record.errors.full_messages
+    }, status: :conflict
+  end
+  
   def invalid_transition(e)
     render json: {
       error: e.message

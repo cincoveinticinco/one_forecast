@@ -5,7 +5,7 @@ class FormField < ApplicationRecord
   # Associations
   belongs_to :form_template
   belongs_to :parent_field, class_name: "FormField", optional: true
-  has_many :form_submission_values
+  has_many :form_submission_values, dependent: :restrict_with_error, inverse_of: :form_field
 
   has_many :child_fields,
            class_name: "FormField",

@@ -1,7 +1,7 @@
 class Api::V1::FormTemplatesController < ApplicationController
   include Pagy::Backend
-  before_action :set_tenant, only: [:index, :show, :destroy]
-  before_action :set_template, only: [:show, :update, :destroy, :publish, :unpublish, :archive, :restore]
+  before_action :set_tenant, only: [:index, :show]
+  before_action :set_template, except: [:index, :create]
 
   def index
     query = FormTemplates::IndexQuery.new(
@@ -18,7 +18,6 @@ class Api::V1::FormTemplatesController < ApplicationController
     }, status: :ok
   end
 
-  # GET /api/v1/form_templates/:id
   def show
     template = FormTemplateSerializer.new(@template).as_json
     render json: template, status: :ok
@@ -41,78 +40,36 @@ class Api::V1::FormTemplatesController < ApplicationController
     end
   end
 
-  # DELETE /api/v1/form_templates/:id
   def destroy
-    @template.destroy
+    @template.destroy!
     head :no_content
   end
 
-  # POST /api/v1/form_templates/:id/publish
   def publish
-    if @template.published_status?
-      return render json: { error: "Template is already published" }, status: :unprocessable_entity
-    end
-    if @template.archived_status?
-      return render json: { error: "Template is archived and cannot be published" }, status: :unprocessable_entity
-    end
-    @template.status = "published"
-    @template.published_at = Time.current
-    @template.archived_at = nil
-    if @template.save
-      render json: @template, status: :ok
-    else
-      render json: { errors: @template.errors.full_messages }, status: :unprocessable_entity
-    end
+    template = FormTemplates::Status::Publish.new(@template).call
+    render json: FormTemplateSerializer.new(template).as_json
   end
 
-  # POST /api/v1/form_templates/:id/unpublish
   def unpublish
-    if @template.draft_status?
-      return render json: { error: "Template is already in draft status" }, status: :unprocessable_entity
-    end
-    if @template.archived_status?
-      return render json: { error: "Template is archived and cannot be unpublished" }, status: :unprocessable_entity
-    end
-    @template.status = "draft"
-    @template.published_at = nil
-    if @template.save
-      render json: @template, status: :ok
-    else
-      render json: { errors: @template.errors.full_messages }, status: :unprocessable_entity
-    end
+    template = FormTemplates::Status::Unpublish.new(@template).call
+    render json: FormTemplateSerializer.new(template).as_json
   end
 
-  # POST /api/v1/form_templates/:id/archive
   def archive
-    if @template.archived_status?
-      return render json: { error: "Template is already archived" }, status: :unprocessable_entity
-    end
-    @template.status = "archived"
-    @template.archived_at = Time.current
-    if @template.save
-      render json: @template, status: :ok
-    else
-      render json: { errors: @template.errors.full_messages }, status: :unprocessable_entity
-    end
+    template = FormTemplates::Status::Archive.new(@template).call
+    render json: FormTemplateSerializer.new(template).as_json
   end
 
-  # POST /api/v1/form_templates/:id/restore
   def restore
-    if @template.draft_status?
-      return render json: { error: "Template is already in draft status" }, status: :unprocessable_entity
-    end
-    if @template.published_status?
-      return render json: { error: "Template is already in published status" }, status: :unprocessable_entity
-    end
-    @template.status =  @template.published_at.present? ? "published" : "draft"
-    @template.archived_at = nil
-    if @template.save
-      render json: @template, status: :ok
-    else
-      render json: { errors: @template.errors.full_messages }, status: :unprocessable_entity
-    end
+    template = FormTemplates::Status::Restore.new(@template).call
+    render json: FormTemplateSerializer.new(template).as_json
   end
 
+  def duplicate
+    template = FormTemplates::Duplicate.new(@template).call
+    render json: FormTemplateSerializer.new(template).as_json, status: :created
+  end
+  
   private
   def set_tenant
     @tenant = Tenant.find(params[:tenant_id])

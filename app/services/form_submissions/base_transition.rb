@@ -1,6 +1,5 @@
 module FormSubmissions
   class BaseTransition
-    class InvalidTransition < StandardError; end
 
     def initialize(form_submission)
       @form_submission = form_submission

@@ -1,18 +1,17 @@
 class Api::V1::FormFieldsController < ApplicationController
+  before_action :set_template, only: [ :index, :tree ]
+
   def initialize
     @fields_service = FormFields::FormFieldService.new
   end
   # GET /api/v1/form_templates/:form_template_id/form_fields
   def index
-    template = current_tenant.form_templates.find(params[:form_template_id])
-    fields = template.form_fields.order(:parent_field_id, :order_index, :id)
+    fields = @template.form_fields.order(:parent_field_id, :order_index, :id)
     render json: fields, status: :ok
   end
   # GET /api/v1/form_templates/:form_template_id/form_fields/tree
   def tree
-    template = current_tenant.form_templates.find(params[:form_template_id])
-    parents = @fields_service.get_tree(template)
-
+    parents = @fields_service.get_tree(@template)
     render json: parents, status: :ok
   end
 
@@ -65,8 +64,10 @@ class Api::V1::FormFieldsController < ApplicationController
 
   private
 
+  def set_template
+    @template = FormTemplate.find(params[:form_template_id])
+  end
   
-
   def form_field_params
     params.require(:form_field).permit(
       :parent_field_id,
