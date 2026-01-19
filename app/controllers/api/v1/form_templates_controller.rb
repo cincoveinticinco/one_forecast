@@ -1,7 +1,7 @@
 class Api::V1::FormTemplatesController < ApplicationController
   include Pagy::Backend
   before_action :set_tenant, only: [:index, :show]
-  before_action :set_template, except: [:index, :create]
+  before_action :set_template, except: [:index, :create, :filter_options]
 
   def index
     query = FormTemplates::FilterQuery.new(
@@ -18,6 +18,9 @@ class Api::V1::FormTemplatesController < ApplicationController
     }, status: :ok
   end
 
+  def filter_options
+    render json: FormTemplates::FilterOptions.call
+  end
   def show
     template = FormTemplateSerializer.new(@template).as_json
     render json: template, status: :ok

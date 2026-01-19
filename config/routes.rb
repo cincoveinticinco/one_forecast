@@ -23,12 +23,16 @@ Rails.application.routes.draw do
         resources :form_templates, only: [ :index ]
       end
       resources :form_templates, only: [ :show, :create, :update, :destroy ] do
+        collection do
+          get :filter_options
+        end
         member do
           post :publish
           post :unpublish
           post :archive
           post :restore
           post :duplicate
+          get :filter_options
         end
         resources :form_fields, only: [ :index, :create, :update, :destroy ] do
           collection do
