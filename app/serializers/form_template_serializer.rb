@@ -20,10 +20,13 @@ class FormTemplateSerializer
         name: template.name,
         status: template.status,
         template_type: template.template_type,
+        access_type: template.access_type,
+        slug: template.slug,
+        url_front: "#{template.tenant.slug}/#{template.slug}",
         published_at: template.published_at,
         archived_at: template.archived_at,
-        tenant_slug: template.tenant.slug,
-        template_slug: template.slug
+        created_at: template.created_at,
+        updated_at: template.updated_at
       }
     end
   end

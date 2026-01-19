@@ -1,4 +1,6 @@
 class ApplicationController < ActionController::Base
+  include Pagy::Backend
+
   # Only allow modern browsers supporting webp images, web push, badges, import maps, CSS nesting, and CSS :has.
   allow_browser versions: :modern
   protect_from_forgery with: :null_session
@@ -56,5 +58,13 @@ class ApplicationController < ActionController::Base
       error: e.message,
       missing_fields: e.missing_fields
     }, status: :unprocessable_entity
+  end
+
+  def pagination_data(pagy)
+    {
+      page: pagy.page,
+      total_pages: pagy.pages,
+      total_count: pagy.count
+    }
   end
 end

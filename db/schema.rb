@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_01_16_202518) do
+ActiveRecord::Schema[8.0].define(version: 2026_01_19_172136) do
   create_table "countries", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "code", null: false
     t.string "name", null: false
@@ -78,6 +78,11 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_16_202518) do
     t.datetime "archived_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["access_type"], name: "index_form_templates_on_access_type"
+    t.index ["name"], name: "index_form_templates_on_name"
+    t.index ["slug"], name: "index_form_templates_on_slug"
+    t.index ["status"], name: "index_form_templates_on_status"
+    t.index ["template_type"], name: "index_form_templates_on_template_type"
     t.index ["tenant_id", "slug"], name: "index_form_templates_on_tenant_id_and_slug", unique: true
     t.index ["tenant_id"], name: "index_form_templates_on_tenant_id"
   end

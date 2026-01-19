@@ -19,11 +19,10 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      get "hello", to: "hello#index" # debug only
       resources :tenants, only: [ :index, :show, :create, :update, :destroy ] do
         resources :form_templates, only: [ :index ]
       end
-      resources :form_templates, only: [ :index, :show, :create, :update, :destroy ] do
+      resources :form_templates, only: [ :show, :create, :update, :destroy ] do
         member do
           post :publish
           post :unpublish

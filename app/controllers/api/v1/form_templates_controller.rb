@@ -1,17 +1,24 @@
 class Api::V1::FormTemplatesController < ApplicationController
-  # GET /api/v1/form_templates
+  include Pagy::Backend
+  
   def index
-    order_hash = safe_order_hash(
-      model: FormTemplate,
-      default: [ "created_at" ],
-      default_dir: "desc"
+    tenant = Tenant.find(params[:tenant_id])
+    query = FormTemplates::IndexQuery.new(
+      scope: tenant.form_templates,
+      params: params
     )
-    puts "Order Hash: #{order_hash.inspect}"
+    pagy, form_templates = pagy(
+      query.call,
+      page: params[:page]
+    )
     templates = FormTemplateSerializer.new(
-      current_tenant.form_templates.order(order_hash)
+      form_templates
     ).as_json
     
-    render json: templates, status: :ok
+    render json: {
+      data: form_templates,
+      pagination: pagination_data(pagy)
+    }, status: :ok
   end
 
   # GET /api/v1/form_templates/:id
