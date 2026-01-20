@@ -1,7 +1,7 @@
 class Api::V1::FormTemplatesController < ApplicationController
   include Pagy::Backend
   before_action :set_tenant, only: [ :index, :show ]
-  before_action :set_template, except: [ :index, :create, :filter_options ]
+  before_action :set_template, except: [ :index, :create, :filter_options, :assign_workflow ]
 
   def index
     query = FormTemplates::FilterQuery.new(
@@ -72,6 +72,14 @@ class Api::V1::FormTemplatesController < ApplicationController
     template = FormTemplates::Duplicate.new(@template).call
     render json: FormTemplateSerializer.new(template).as_json, status: :created
   end
+
+  def assign_workflow
+     if @template.update(workflow_id: params[:workflow_id])
+      render json: @template, status: :ok
+    else
+      render json: { errors: @template.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
   private
   def set_tenant
     @tenant = Tenant.find(params[:tenant_id])
@@ -85,7 +93,8 @@ class Api::V1::FormTemplatesController < ApplicationController
       :slug,
       :template_type,
       :access_type,
-      :tenant_id
+      :tenant_id,
+      :workflow_id
     )
 
     sanitize_enum!(raw, :template_type, FormTemplate::TEMPLATE_TYPES)
