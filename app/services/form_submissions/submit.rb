@@ -1,11 +1,14 @@
 module FormSubmissions
-  
   class Submit
-    def call
-      validate!
-      validate_required_fields!
+    def initialize(form_submission)
+      @form_submission = form_submission
+    end
 
-      update!(
+    def call
+      validate_transition!
+      validations_inputs!
+
+      form_submission.update!(
         status: "submitted",
         submitted_at: Time.current
       )
@@ -14,29 +17,19 @@ module FormSubmissions
     end
 
     private
+    attr_reader :form_submission
 
-    def validate!
+    def validate_transition!
       return if form_submission.draft? || form_submission.reopened?
 
-      raise InvalidTransition,
+      raise InvalidTransitionError,
         "FormSubmission cannot be submitted from #{form_submission.status}"
     end
+    def validations_inputs!
+      errors = FormSubmissions::ValidateValues.new(form_submission).call
+      return if errors.empty?
 
-    def validate_required_fields!
-      missing_fields = []
-
-      values_by_field_id =
-        form_submission
-          .form_submission_values
-          .group_by(&:form_field_id)
-          
-      form_submission.form_template.form_fields.each do |field|
-        next unless field.required?
-        values = values_by_field_id[field.id] || []
-
-        missing_fields << field.label if values.blank?
-      end
-      raise MissingRequiredFields.new(missing_fields) unless missing_fields.empty?
+      raise FormValidationError.new(errors)
     end
   end
 end

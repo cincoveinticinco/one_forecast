@@ -1,7 +1,7 @@
 class Api::V1::FormTemplatesController < ApplicationController
   include Pagy::Backend
-  before_action :set_tenant, only: [:index, :show]
-  before_action :set_template, except: [:index, :create, :filter_options]
+  before_action :set_tenant, only: [ :index, :show ]
+  before_action :set_template, except: [ :index, :create, :filter_options ]
 
   def index
     query = FormTemplates::FilterQuery.new(
@@ -72,7 +72,6 @@ class Api::V1::FormTemplatesController < ApplicationController
     template = FormTemplates::Duplicate.new(@template).call
     render json: FormTemplateSerializer.new(template).as_json, status: :created
   end
-  
   private
   def set_tenant
     @tenant = Tenant.find(params[:tenant_id])

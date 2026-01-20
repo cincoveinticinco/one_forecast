@@ -13,6 +13,7 @@ class ApplicationController < ActionController::Base
   rescue_from MissingRequiredFields, with: :missing_required_fields
   rescue_from Pagy::OverflowError, with: :handle_pagy_overflow_error
   rescue_from InvalidEnumFilter, with: :invalid_enum_filter
+  rescue_from FormValidationError, with: :validation_error
 
   include OrderableParams
 
@@ -42,13 +43,13 @@ class ApplicationController < ActionController::Base
       details: record.errors.full_messages
     }, status: :conflict
   end
-  
+
   def invalid_transition(e)
     render json: {
       error: e.message
     }, status: :unprocessable_entity
   end
-  
+
   def missing_required_fields(e)
     render json: {
       error: e.message,
@@ -58,7 +59,7 @@ class ApplicationController < ActionController::Base
 
   def handle_pagy_overflow_error(e)
     render json: {
-      error: e.message,
+      error: e.message
     }, status: :unprocessable_entity
   end
 
@@ -70,7 +71,14 @@ class ApplicationController < ActionController::Base
       allowed_values: e.allowed_values
     }, status: :unprocessable_entity
   end
-  
+
+  def validation_error(e)
+    render json: {
+      error: "Validation failed",
+      fields: e.errors
+    }, status: :unprocessable_entity
+  end
+
   def pagination_data(pagy)
     {
       page: pagy.page,
@@ -85,7 +93,7 @@ class ApplicationController < ActionController::Base
 
     raise InvalidEnumFilter.new(
       field: field,
-      invalid_values: [params[field]],
+      invalid_values: [ params[field] ],
       allowed_values: allowed
     )
   end

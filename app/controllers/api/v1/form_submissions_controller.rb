@@ -1,11 +1,11 @@
 class Api::V1::FormSubmissionsController < ApplicationController
   before_action :set_form_template
-  before_action :set_form_submission, except: [:index, :create]
+  before_action :set_form_submission, except: [ :index, :create ]
 
   def initialize
     @submission_service = FormSubmissions::FormSubmissionService.new
   end
-  
+
   def index
     form_submissions = @form_template.form_submissions.where(deleted_at: nil)
 
@@ -78,7 +78,7 @@ class Api::V1::FormSubmissionsController < ApplicationController
       form_submission_values_attributes: [
         :id,
         :form_field_id,
-        :value,
+        :value
       ]
     )
   end

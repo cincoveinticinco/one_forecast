@@ -13,7 +13,7 @@ module FormSubmissions
 
     private
     attr_reader :form_submission
-    
+
     def validate!
       return if form_submission.reopened? || form_submission.submitted?
 
