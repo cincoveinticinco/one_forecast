@@ -11,7 +11,7 @@ class Api::V1::FormTemplatesController < ApplicationController
     pagy, form_templates = pagy(
       query.call,
       page: params[:page],
-      items: params[:items]
+      limit: params[:limit]
     )
     render json: {
       data: FormTemplateSerializer.new(form_templates).as_json,
