@@ -13,7 +13,7 @@ module FormFields
     protected
 
     def applicable_field_types
-      [ FormField.field_types[:multiselect] ]
+      [ FormField.field_types[:multiselect], FormField.field_types[:repeatable_group] ]
     end
 
     def validate_value(value)
