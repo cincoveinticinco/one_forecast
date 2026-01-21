@@ -101,7 +101,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_20_223600) do
     t.bigint "tenant_id", null: false
     t.string "name"
     t.string "workflow_type"
-    t.string "status", default: "active"
+    t.string "status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["tenant_id"], name: "index_workflows_on_tenant_id"
