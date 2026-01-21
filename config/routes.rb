@@ -21,7 +21,9 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :tenants, only: [ :index, :show, :create, :update, :destroy ] do
         resources :form_templates, only: [ :index ]
+        resources :workflows, only: [ :index ]
       end
+      resources :workflows, only: [ :show, :create, :update, :destroy ]
       resources :form_templates, only: [ :show, :create, :update, :destroy ] do
         collection do
           get :filter_options
@@ -32,7 +34,7 @@ Rails.application.routes.draw do
           post :archive
           post :restore
           post :duplicate
-          get :filter_options
+          post :assign_workflow
         end
         resources :form_fields, only: [ :index, :create, :update, :destroy ] do
           collection do

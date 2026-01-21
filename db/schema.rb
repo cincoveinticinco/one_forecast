@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_01_19_192553) do
+ActiveRecord::Schema[8.0].define(version: 2026_01_20_223600) do
   create_table "countries", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "code", null: false
     t.string "name", null: false
@@ -78,6 +78,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_19_192553) do
     t.datetime "archived_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "workflow_id"
     t.index ["access_type"], name: "index_form_templates_on_access_type"
     t.index ["name"], name: "index_form_templates_on_name"
     t.index ["slug"], name: "index_form_templates_on_slug"
@@ -85,6 +86,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_19_192553) do
     t.index ["template_type"], name: "index_form_templates_on_template_type"
     t.index ["tenant_id", "slug"], name: "index_form_templates_on_tenant_id_and_slug", unique: true
     t.index ["tenant_id"], name: "index_form_templates_on_tenant_id"
+    t.index ["workflow_id"], name: "index_form_templates_on_workflow_id"
   end
 
   create_table "tenants", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -95,10 +97,22 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_19_192553) do
     t.index ["slug"], name: "index_tenants_on_slug", unique: true
   end
 
+  create_table "workflows", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "tenant_id", null: false
+    t.string "name"
+    t.string "workflow_type"
+    t.string "status", default: "active"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tenant_id"], name: "index_workflows_on_tenant_id"
+  end
+
   add_foreign_key "form_fields", "form_fields", column: "parent_field_id"
   add_foreign_key "form_fields", "form_templates"
   add_foreign_key "form_submission_values", "form_fields"
   add_foreign_key "form_submission_values", "form_submissions"
   add_foreign_key "form_submissions", "form_templates"
   add_foreign_key "form_templates", "tenants"
+  add_foreign_key "form_templates", "workflows"
+  add_foreign_key "workflows", "tenants"
 end
