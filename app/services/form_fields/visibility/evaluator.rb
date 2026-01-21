@@ -14,8 +14,8 @@ module FormFields
         hide_if = rules["hide_if"]
 
         return false if hide_if&.any? { |r| rule_matches?(r) }
-
         return true unless show_if.present?
+
         show_if.all? { |r| rule_matches?(r) }
       end
 
@@ -23,9 +23,10 @@ module FormFields
 
       def rule_matches?(rule_hash)
         rule_obj = rule(rule_hash)
+        return false if rule_obj.nil?
+
         field_id = rule_obj.field_id
         submission_value = @submission_values[field_id]
-
         rule_obj.matches?(submission_value)
       end
 
@@ -33,7 +34,9 @@ module FormFields
         keys = @available_keys.map { |k| k[:key] }
 
         rule = Rule.new(rule_hash, @available_keys)
-        rule.valid_definition!(keys)
+        validation_result = rule.valid_definition!(keys)
+        return nil unless validation_result[:valid]
+
         rule
       end
     end

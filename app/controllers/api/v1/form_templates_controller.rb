@@ -77,9 +77,9 @@ class Api::V1::FormTemplatesController < ApplicationController
   def assign_workflow
      if @template.update(workflow_id: params[:workflow_id])
       render json: @template, status: :ok
-    else
+     else
       render json: { errors: @template.errors.full_messages }, status: :unprocessable_entity
-    end
+     end
   end
   private
   def set_tenant

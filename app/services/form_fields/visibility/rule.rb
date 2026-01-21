@@ -11,13 +11,23 @@ module FormFields
       end
 
       def valid_definition!(available_keys)
+        errors = []
+
         unless available_keys.include?(field_key)
-          raise ArgumentError, "Visibility rule references unknown field_key: #{field_key}"
+            Rails.logger.debug("Visibility rule references unknown field_key: #{field_key}")
+            errors << "Visibility rule references unknown field_key: #{field_key}"
         end
 
         unless OperatorRegistry.supported?(operator)
-          raise ArgumentError, "Invalid visibility operator: #{operator}"
+          Rails.logger.debug("Invalid visibility operator: #{operator}")
+          errors << "Invalid visibility operator: #{operator}"
         end
+        return { valid: true } if errors.empty?
+
+        {
+          valid: false,
+          errors: errors
+        }
       end
 
       def matches?(submission_values)
