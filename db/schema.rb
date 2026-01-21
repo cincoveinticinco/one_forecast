@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_01_20_223600) do
+ActiveRecord::Schema[8.0].define(version: 2026_01_21_195903) do
   create_table "countries", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "code", null: false
     t.string "name", null: false
@@ -97,6 +97,24 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_20_223600) do
     t.index ["slug"], name: "index_tenants_on_slug", unique: true
   end
 
+  create_table "workflow_steps", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "workflow_id", null: false
+    t.string "name"
+    t.string "step_type"
+    t.string "color"
+    t.integer "order_index"
+    t.json "assignees"
+    t.json "actions_enabled"
+    t.json "actions"
+    t.bigint "form_template_id"
+    t.json "file_upload_settings"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["form_template_id"], name: "index_workflow_steps_on_form_template_id"
+    t.index ["workflow_id", "order_index"], name: "index_workflow_steps_on_workflow_id_and_order_index"
+    t.index ["workflow_id"], name: "index_workflow_steps_on_workflow_id"
+  end
+
   create_table "workflows", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "tenant_id", null: false
     t.string "name"
@@ -114,5 +132,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_20_223600) do
   add_foreign_key "form_submissions", "form_templates"
   add_foreign_key "form_templates", "tenants"
   add_foreign_key "form_templates", "workflows"
+  add_foreign_key "workflow_steps", "form_templates"
+  add_foreign_key "workflow_steps", "workflows"
   add_foreign_key "workflows", "tenants"
 end
