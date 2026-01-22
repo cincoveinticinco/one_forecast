@@ -1,7 +1,8 @@
 class Api::V1::FormSubmissionsController < ApplicationController
   before_action :set_tenant, only: [ :index, :show, :create, :update, :destroy, :submit ]
   before_action :set_form_template, only: [ :index, :show, :create, :update, :destroy, :submit ]
-  before_action :set_form_submission, only: [ :reopen, :tree, :autosave, :submit  ]
+  before_action :set_form_template_no_slug, only: [ :tree ]
+  before_action :set_form_submission, only: [ :show, :reopen, :tree, :autosave, :submit ]
 
   def initialize
     @submission_service = FormSubmissions::FormSubmissionService.new
