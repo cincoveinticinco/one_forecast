@@ -1,6 +1,6 @@
 class Api::V1::FormTemplatesController < ApplicationController
   include Pagy::Backend
-  before_action :set_tenant, only: [ :index, :show, :create ]
+  before_action :set_tenant, only: [ :index, :create ]
   before_action :set_template, except: [ :index, :create, :filter_options, :assign_workflow ]
 
   def index

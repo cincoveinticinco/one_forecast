@@ -2,7 +2,7 @@ class FormTemplateSerializer
   def initialize(form_templates)
     @form_templates = form_templates
   end
-  
+
   def as_json(*)
     if @form_templates.is_a?(ActiveRecord::Relation) || @form_templates.is_a?(Array)
       serialize_collection
@@ -10,11 +10,11 @@ class FormTemplateSerializer
       serialize_single
     end
   end
-  
+
   private
 
   def serialize_collection
-    return @form_templates.map do |template|
+    @form_templates.map do |template|
       {
         id: template.id,
         name: template.name,
@@ -38,8 +38,8 @@ class FormTemplateSerializer
       template_type: @form_templates.template_type,
       published_at: @form_templates.published_at,
       archived_at: @form_templates.archived_at,
-      tenant_slug: @form_templates.tenant.slug,
-      template_slug: @form_templates.slug
+      slug: @form_templates.slug,
+      url_front: "#{@form_templates.tenant.slug}/#{@form_templates.slug}"
     }
   end
 end
