@@ -65,9 +65,9 @@ class Api::V1::FormFieldsController < ApplicationController
   private
 
   def set_template
-    @template = FormTemplate.find(params[:form_template_id])
+    @template = FormTemplate.friendly.find(params[:form_template_id])
   end
-  
+
   def form_field_params
     params.require(:form_field).permit(
       :parent_field_id,

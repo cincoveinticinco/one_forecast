@@ -1,4 +1,5 @@
 class FormTemplate < ApplicationRecord
+  extend FriendlyId
   # Concerns
   include TemplateEnum
   # Associations
@@ -7,7 +8,7 @@ class FormTemplate < ApplicationRecord
   has_many :form_submissions, dependent: :restrict_with_error, inverse_of: :form_template
   belongs_to :workflow, optional: true
 
-  ORDERABLE_COLUMNS = %w[created_at updated_at name slug status template_type published_at archived_at].freeze
+  friendly_id :slug, use: :slugged
 
   # Validations
   validates :name, :slug, presence: true
@@ -21,4 +22,6 @@ class FormTemplate < ApplicationRecord
   TEMPLATE_TYPES = template_types.keys
   STATUSES       = statuses.keys
   ACCESS_TYPES   = access_types.keys
+
+  ORDERABLE_COLUMNS = %w[created_at updated_at name slug status template_type published_at archived_at].freeze
 end
