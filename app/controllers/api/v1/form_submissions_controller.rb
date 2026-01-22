@@ -1,6 +1,7 @@
 class Api::V1::FormSubmissionsController < ApplicationController
   before_action :set_tenant, only: [ :index, :show, :create, :update, :destroy ]
-  before_action :set_form_template, except: [ :autosave ]
+  before_action :set_form_template, only: [ :index, :show, :create, :update, :destroy ]
+  before_action :set_form_template_no_slug, only: [ :submit, :reopen, :tree, :autosave ]
   before_action :set_form_submission, except: [ :index, :create ]
 
   def initialize
@@ -77,7 +78,9 @@ class Api::V1::FormSubmissionsController < ApplicationController
       value: value.value
     }, status: :ok
   end
+
   private
+
   def set_tenant
     @tenant = Tenant.friendly.find(params[:tenant_id])
   end
@@ -86,9 +89,14 @@ class Api::V1::FormSubmissionsController < ApplicationController
     @form_template = @tenant.form_templates.friendly.find(params[:form_template_id])
   end
 
+  def set_form_template_no_slug
+    @form_template = FormTemplate.friendly.find(params[:form_template_id])
+  end
+
   def set_form_submission
     @form_submission = FormSubmission.find(params[:id])
   end
+
   def form_submission_params
     params.require(:form_submission).permit(
       :status,
