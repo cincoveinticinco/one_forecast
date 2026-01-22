@@ -1,6 +1,6 @@
 class Api::V1::FormTemplatesController < ApplicationController
   include Pagy::Backend
-  before_action :set_tenant, only: [ :index, :show ]
+  before_action :set_tenant, only: [ :index, :show, :create ]
   before_action :set_template, except: [ :index, :create, :filter_options, :assign_workflow ]
 
   def index
@@ -83,7 +83,7 @@ class Api::V1::FormTemplatesController < ApplicationController
   end
   private
   def set_tenant
-    @tenant = Tenant.find(params[:tenant_id])
+    @tenant = Tenant.find(params[:tenant_id] || params.dig(:form_template, :tenant_id))
   end
   def set_template
     @template = FormTemplate.find(params[:id])

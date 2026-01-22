@@ -12,9 +12,13 @@ class FormTemplate < ApplicationRecord
   # Validations
   validates :name, :slug, presence: true
   validates :slug, uniqueness: { scope: :tenant_id }
+  validates :slug,
+          format: {
+            with: /\A[a-zA-Z0-9_-]+\z/,
+            message: :invalid_slug_format
+          }
 
   TEMPLATE_TYPES = template_types.keys
   STATUSES       = statuses.keys
   ACCESS_TYPES   = access_types.keys
-
 end
