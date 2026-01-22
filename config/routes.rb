@@ -24,7 +24,11 @@ Rails.application.routes.draw do
           member do
             get :tree
           end
-          resources :form_submissions, only: [ :index, :show, :create, :update, :destroy ]
+          resources :form_submissions, only: [ :show ] do
+            member do
+              post :submit
+            end
+          end
           resources :form_submission_values, only: [ :index ]
         end
         resources :workflows, only: [ :index ]
@@ -50,13 +54,12 @@ Rails.application.routes.draw do
         resources :form_submissions, only: [ :index, :show, :create, :update, :destroy ] do
           member do
             get :tree
-            post :submit
             post :reopen
           end
         end
         resources :form_submission_values, only: [ :index, :show, :create ]
       end
-      resources :form_submissions, only: [] do
+      resources :form_submissions, only: [ :show ] do
         member do
           patch :autosave
         end

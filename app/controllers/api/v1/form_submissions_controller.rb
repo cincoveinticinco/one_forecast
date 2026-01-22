@@ -1,8 +1,7 @@
 class Api::V1::FormSubmissionsController < ApplicationController
-  before_action :set_tenant, only: [ :index, :show, :create, :update, :destroy ]
-  before_action :set_form_template, only: [ :index, :show, :create, :update, :destroy ]
-  before_action :set_form_template_no_slug, only: [ :submit, :reopen, :tree, :autosave ]
-  before_action :set_form_submission, except: [ :index, :create ]
+  before_action :set_tenant, only: [ :index, :show, :create, :update, :destroy, :submit ]
+  before_action :set_form_template, only: [ :index, :show, :create, :update, :destroy, :submit ]
+  before_action :set_form_submission, only: [ :reopen, :tree, :autosave, :submit  ]
 
   def initialize
     @submission_service = FormSubmissions::FormSubmissionService.new
@@ -90,7 +89,7 @@ class Api::V1::FormSubmissionsController < ApplicationController
   end
 
   def set_form_template_no_slug
-    @form_template = FormTemplate.friendly.find(params[:form_template_id])
+    @form_template = FormTemplate.find(params[:form_template_id])
   end
 
   def set_form_submission
