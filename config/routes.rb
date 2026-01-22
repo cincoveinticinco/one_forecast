@@ -24,7 +24,7 @@ Rails.application.routes.draw do
           member do
             get :tree
           end
-          resources :form_submissions, only: [ :show ] do
+          resources :form_submissions, only: [ :show, :index,  :create, :update, :destroy ] do
             member do
               post :submit
             end
