@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_01_20_223600) do
+ActiveRecord::Schema[8.0].define(version: 2026_01_22_150311) do
   create_table "countries", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "code", null: false
     t.string "name", null: false
@@ -54,6 +54,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_20_223600) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["form_field_id"], name: "index_form_submission_values_on_form_field_id"
+    t.index ["form_submission_id", "form_field_id"], name: "idx_on_form_submission_id_form_field_id_b464949d9a", unique: true
     t.index ["form_submission_id"], name: "index_form_submission_values_on_form_submission_id"
   end
 

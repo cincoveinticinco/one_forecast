@@ -50,6 +50,11 @@ Rails.application.routes.draw do
         end
         resources :form_submission_values, only: [ :index, :show, :create ]
       end
+      resources :form_submissions, only: [] do
+        member do
+          patch :autosave
+        end
+      end
     end
   end
 end

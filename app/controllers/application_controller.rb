@@ -9,11 +9,11 @@ class ApplicationController < ActionController::Base
   rescue_from ActiveRecord::RecordInvalid, with: :record_invalid
   rescue_from ActiveRecord::RecordNotDestroyed, ActiveRecord::InvalidForeignKey, with: :record_not_destroyed
   rescue_from InvalidTransitionError, with: :invalid_transition
-  rescue_from InvalidTransitionError, with: :invalid_transition
   rescue_from MissingRequiredFields, with: :missing_required_fields
   rescue_from Pagy::OverflowError, with: :handle_pagy_overflow_error
   rescue_from InvalidEnumFilter, with: :invalid_enum_filter
   rescue_from FormValidationError, with: :validation_error
+  rescue_from FormSubmissionValues::Autosave::InvalidField, with: :invalid_field
 
   include OrderableParams
 
@@ -79,6 +79,11 @@ class ApplicationController < ActionController::Base
     }, status: :unprocessable_entity
   end
 
+  def invalid_field(e)
+    render json: {
+      error: e.message
+    }, status: :unprocessable_entity
+  end
   def pagination_data(pagy)
     {
       page: pagy.page,

@@ -1,5 +1,5 @@
 class Api::V1::FormSubmissionsController < ApplicationController
-  before_action :set_form_template
+  before_action :set_form_template, except: [ :autosave ]
   before_action :set_form_submission, except: [ :index, :create ]
 
   def initialize
@@ -62,6 +62,20 @@ class Api::V1::FormSubmissionsController < ApplicationController
 
     render json: parents, status: :ok
   end
+
+  def autosave
+    value = FormSubmissionValues::Autosave.new(
+      form_submission: @form_submission,
+      field_key: autosave_params[:field_key],
+      value: autosave_params[:value]
+    ).call
+
+    render json: {
+      id: value.id,
+      field_key: value.form_field.key,
+      value: value.value
+    }, status: :ok
+  end
   private
 
   def set_form_template
@@ -69,7 +83,7 @@ class Api::V1::FormSubmissionsController < ApplicationController
   end
 
   def set_form_submission
-    @form_submission = @form_template.form_submissions.find(params[:id])
+    @form_submission = FormSubmission.find(params[:id])
   end
   def form_submission_params
     params.require(:form_submission).permit(
@@ -81,5 +95,9 @@ class Api::V1::FormSubmissionsController < ApplicationController
         :value
       ]
     )
+  end
+
+  def autosave_params
+    params.permit(:field_key, :value, :id, form_submission: {})
   end
 end
