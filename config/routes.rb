@@ -20,7 +20,11 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :tenants, only: [ :index, :show, :create, :update, :destroy ] do
-        resources :form_templates, only: [ :index ]
+        resources :form_templates, only: [ :index, :show ] do
+          member do
+            get :tree
+          end
+        end
         resources :workflows, only: [ :index ]
       end
       resources :workflows, only: [ :show, :create, :update, :destroy ]

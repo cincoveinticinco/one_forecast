@@ -77,6 +77,9 @@ class Api::V1::FormSubmissionsController < ApplicationController
     }, status: :ok
   end
   private
+  def set_form_tenat
+    @form_template = FormTemplate.friendly.find(params[:form_template_id])
+  end
 
   def set_form_template
     @form_template = FormTemplate.friendly.find(params[:form_template_id])

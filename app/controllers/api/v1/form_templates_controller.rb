@@ -3,6 +3,10 @@ class Api::V1::FormTemplatesController < ApplicationController
   before_action :set_tenant, only: [ :index, :create ]
   before_action :set_template, except: [ :index, :create, :filter_options, :assign_workflow ]
 
+
+  def initialize
+    @fields_service = FormFields::FormFieldService.new
+  end
   def index
     query = FormTemplates::FilterQuery.new(
       scope: @tenant.form_templates,
@@ -81,9 +85,15 @@ class Api::V1::FormTemplatesController < ApplicationController
       render json: { errors: @template.errors.full_messages }, status: :unprocessable_entity
      end
   end
+
+  def tree
+    parents = @fields_service.get_tree(@template)
+    render json: parents, status: :ok
+  end
+
   private
   def set_tenant
-    @tenant = Tenant.find(params[:tenant_id] || params.dig(:form_template, :tenant_id))
+    @tenant = Tenant.find(params[:tenant_id])
   end
   def set_template
     @template = FormTemplate.friendly.find(params[:form_template_id] || params[:id])

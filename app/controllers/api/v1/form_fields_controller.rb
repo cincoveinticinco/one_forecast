@@ -1,18 +1,10 @@
 class Api::V1::FormFieldsController < ApplicationController
   before_action :set_template, only: [ :index, :tree ]
 
-  def initialize
-    @fields_service = FormFields::FormFieldService.new
-  end
   # GET /api/v1/form_templates/:form_template_id/form_fields
   def index
     fields = @template.form_fields.order(:parent_field_id, :order_index, :id)
     render json: fields, status: :ok
-  end
-  # GET /api/v1/form_templates/:form_template_id/form_fields/tree
-  def tree
-    parents = @fields_service.get_tree(@template)
-    render json: parents, status: :ok
   end
 
   # POST /api/v1/form_templates/:form_template_id/form_fields
