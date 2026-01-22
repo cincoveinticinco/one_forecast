@@ -24,6 +24,8 @@ Rails.application.routes.draw do
           member do
             get :tree
           end
+          resources :form_submissions, only: [ :index, :show, :create, :update, :destroy ]
+          resources :form_submission_values, only: [ :index ]
         end
         resources :workflows, only: [ :index ]
       end
