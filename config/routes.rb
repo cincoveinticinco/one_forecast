@@ -25,6 +25,9 @@ Rails.application.routes.draw do
             get :tree
           end
           resources :form_submissions, only: [ :show, :index,  :create, :update, :destroy ] do
+            collection do
+              get :index, to: "form_submissions#tenant_index"
+            end
             member do
               post :submit
             end
@@ -52,6 +55,9 @@ Rails.application.routes.draw do
           end
         end
         resources :form_submissions, only: [ :index, :show, :create, :update, :destroy ] do
+          collection do
+            get :filter_options
+          end
           member do
             get :tree
             post :reopen
@@ -59,7 +65,7 @@ Rails.application.routes.draw do
         end
         resources :form_submission_values, only: [ :index, :show, :create ]
       end
-      resources :form_submissions, only: [ :show ] do
+      resources :form_submissions, only: [ :index, :show ] do
         member do
           patch :autosave
         end

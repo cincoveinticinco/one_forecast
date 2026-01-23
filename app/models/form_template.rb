@@ -4,9 +4,14 @@ class FormTemplate < ApplicationRecord
   include TemplateEnum
   # Associations
   belongs_to :tenant
-  has_many :form_fields, dependent: :restrict_with_error, inverse_of: :form_template
-  has_many :form_submissions, dependent: :restrict_with_error, inverse_of: :form_template
   belongs_to :workflow, optional: true
+
+  has_many :form_fields, dependent: :restrict_with_error, inverse_of: :form_template
+  has_many :input_fields, -> {
+    where.not(field_type: [ "heading", "subheading", "paragraph", "section", "block" ])
+      .order(:order_index)
+  }, class_name: "FormField"
+  has_many :form_submissions, dependent: :restrict_with_error, inverse_of: :form_template
 
   friendly_id :slug, use: :slugged
 

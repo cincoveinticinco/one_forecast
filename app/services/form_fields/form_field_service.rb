@@ -2,7 +2,6 @@
 
 module FormFields
   class FormFieldService
-    
     def get_tree(template, form_submission = nil)
       @form_submission = form_submission
       @values_by_field_id = build_values_by_field_id
@@ -15,7 +14,7 @@ module FormFields
       @children_by_parent = fields.group_by { |f| f["parent_field_id"] }
 
       parents = Array(@children_by_parent[nil]).sort_by do |p|
-        [p["order_index"].to_i, p["id"]]
+        [ p["order_index"].to_i, p["id"] ]
       end
 
       parents.each { |parent| attach_children(parent) }
@@ -34,7 +33,7 @@ module FormFields
       return if children.empty?
 
       node["children"] = children.sort_by do |child|
-        [child["order_index"].to_i, child["id"]]
+        [ child["order_index"].to_i, child["id"] ]
       end
 
       node["children"].each { |child| attach_children(child) }

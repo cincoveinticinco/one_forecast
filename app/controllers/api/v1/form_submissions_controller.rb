@@ -1,19 +1,35 @@
 class Api::V1::FormSubmissionsController < ApplicationController
-  before_action :set_tenant, only: [ :index, :show, :create, :update, :destroy, :submit ]
-  before_action :set_form_template, only: [ :index, :show, :create, :update, :destroy, :submit ]
-  before_action :set_form_template_no_slug, only: [ :tree ]
+  include Pagy::Backend
+  before_action :set_form_template, :set_tenant, only: [ :tenant_index, :show, :create, :update, :destroy, :submit ]
+  before_action :set_form_template_no_slug, only: [ :tree, :index, :filter_options  ]
   before_action :set_form_submission, only: [ :show, :reopen, :tree, :autosave, :submit ]
 
   def initialize
     @submission_service = FormSubmissions::FormSubmissionService.new
   end
 
-  def index
-    form_submissions = @form_template.form_submissions.where(deleted_at: nil)
+  def tenant_index
+    form_submissions = @form_template.form_submissions
 
     render json: form_submissions.map { |fs|
       FormSubmissionSerializer.new(fs, view: :detailed).as_json
     }
+  end
+
+  def index
+    query = FormSubmissions::FilterSubmissionsQuery.new(
+      scope: @form_template.form_submissions,
+      params: params
+    )
+    pagy, form_submissions = pagy(
+      query.call,
+      page: params[:page],
+      limit: params[:limit]
+    )
+    render json: {
+      data: FormSubmissionSerializer.new(form_submissions, view: :response_view).as_json,
+      pagination: pagination_data(pagy)
+    }, status: :ok
   end
 
   def show
@@ -77,6 +93,10 @@ class Api::V1::FormSubmissionsController < ApplicationController
       field_key: value.form_field.key,
       value: value.value
     }, status: :ok
+  end
+
+  def filter_options
+    render json: FormSubmissions::FilterOptions.new(@form_template).call
   end
 
   private
