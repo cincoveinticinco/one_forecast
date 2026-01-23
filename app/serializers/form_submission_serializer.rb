@@ -68,23 +68,33 @@ class FormSubmissionSerializer
     }
   end
 
+  def serialize_submissions_data(form_template, submissions)
+    form_fields = form_template.input_fields
+    submissions.map do |submission|
+      values_by_field_id = submission.form_submission_values.index_by(&:form_field_id)
+
+      values = {}
+      form_fields.each do |field|
+        value_record = values_by_field_id[field.id]
+        values[field.key] = value_record&.value
+      end
+
+      {
+        id: submission.id,
+        status: submission.status,
+        submitted_at: submission.submitted_at,
+        updated_at: submission.updated_at,
+        created_at: submission.created_at,
+        values: values
+      }
+    end
+  end
+
   def serialize_empty_submission
     {
       form_template: nil,
       columns: [],
       data: []
     }
-  end
-
-  def serialize_submissions_data(form_template, submissions)
-    form_fields = form_template.input_fields
-    submissions.map do |submission|
-      row = {}
-      form_fields.each do |field|
-        value_record = submission.form_submission_values.find { |v| v.form_field_id == field.id }
-        row[field.key] = value_record ? value_record.value : nil
-      end
-      row
-    end
   end
 end
