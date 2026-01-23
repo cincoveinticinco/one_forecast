@@ -1,4 +1,5 @@
 class WorkflowStep < ApplicationRecord
+  include WorkflowStep::TemplateWorkflowStepEnum
   belongs_to :workflow
   belongs_to :form_template, optional: true
 
@@ -22,6 +23,8 @@ class WorkflowStep < ApplicationRecord
   end
 
   def set_default_actions_enabled
-    self.actions_enabled = ["approve", "reject"]
+    self.actions_enabled = { "approve" => true, "reject" => true, "return" => true }
   end
 end
+
+
