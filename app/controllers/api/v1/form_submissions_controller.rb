@@ -17,7 +17,7 @@ class Api::V1::FormSubmissionsController < ApplicationController
     pagy, form_submissions = pagy(query.call, page: params[:page], limit: params[:limit])
     submission_data = serialize_submission(form_submissions, :response_view)
 
-    render json: { **submission_data, pagination: pagination_data(pagy) }
+    render json: { data: submission_data, pagination: pagination_data(pagy) }
   end
 
   def show

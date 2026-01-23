@@ -51,21 +51,7 @@ class FormSubmissionSerializer
   def responses_view
     return serialize_empty_submission if @form_submission.empty?
     form_template = @form_submission.first.form_template
-    form_fields = form_template.input_fields
-    {
-      form_template: {
-        id: form_template.id,
-        name: form_template.name
-      },
-      columns: form_fields.map do |field|
-        {
-          key: field.key,
-          label: field.label,
-          type: field.field_type
-        }
-      end,
-      data: serialize_submissions_data(form_template, @form_submission)
-    }
+    serialize_submissions_data(form_template, @form_submission)
   end
 
   def serialize_submissions_data(form_template, submissions)
