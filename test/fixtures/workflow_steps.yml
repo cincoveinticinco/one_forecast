@@ -1,0 +1,25 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  workflow: one
+  name: MyString
+  step_type: MyString
+  color: MyString
+  order_index: 1
+  assignees: 
+  actions_enabled: 
+  actions: 
+  form_template: one
+  file_upload_settings: 
+
+two:
+  workflow: two
+  name: MyString
+  step_type: MyString
+  color: MyString
+  order_index: 1
+  assignees: 
+  actions_enabled: 
+  actions: 
+  form_template: two
+  file_upload_settings: 

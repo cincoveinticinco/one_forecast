@@ -31,7 +31,10 @@ Rails.application.routes.draw do
         end
         resources :workflows, only: [ :index ]
       end
-      resources :workflows, only: [ :show, :create, :update, :destroy ]
+      resources :workflows, only: [ :show, :create, :update, :destroy ] do
+        resources :workflow_steps, only: [ :index, :create ]
+      end
+      resources :workflow_steps, only: [ :show, :update, :destroy ]
       resources :form_templates, only: [ :show, :create, :update, :destroy ] do
         collection do
           get :filter_options
