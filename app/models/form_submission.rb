@@ -11,18 +11,23 @@ class FormSubmission < ApplicationRecord
   scope :search_by_submission, ->(search_terms) {
     return all if search_terms.blank?
 
-    terms = search_terms.is_a?(String) ? search_terms.split(/\s+/) : Array(search_terms)
-    terms = terms.map(&:strip).reject(&:blank?)
-
+    terms = normalize_search_terms(search_terms)
     return all if terms.empty?
 
-    conditions = terms.map { "form_submission_values.value LIKE ?" }
-    values = terms.map { |term| "%#{sanitize_sql_like(term)}%" }
-
     joins(:form_submission_values)
-      .where(conditions.join(" OR "), *values)
+      .where(
+        terms.map { "form_submission_values.value LIKE ?" }.join(" OR "),
+        *terms.map { |term| "%#{sanitize_sql_like(term)}%" }
+      )
       .distinct
   }
+
+  def self.normalize_search_terms(search_terms)
+    Array(search_terms)
+      .flat_map { |term| term.to_s.split(/\s+/) }
+      .map(&:strip)
+      .reject(&:blank?)
+  end
 
   private
 
