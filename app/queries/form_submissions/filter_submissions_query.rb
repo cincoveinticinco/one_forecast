@@ -8,6 +8,7 @@ module FormSubmissions
     ].freeze
 
     ALLOWED_ORDER_DIRECTIONS = %w[asc desc].freeze
+    FILTER_PREFIX = "filter_"
 
     def initialize(scope:, params:)
       @scope = scope
@@ -15,8 +16,7 @@ module FormSubmissions
     end
 
     def call
-      filtered_scope
-        .then { |s| apply_order(s) }
+      filtered_scope.then { |s| apply_order(s) }
     end
 
     private
@@ -56,12 +56,26 @@ module FormSubmissions
     end
 
     def filter_by_field_key(s)
-      return s unless params[:field_key].present?
+      return s unless has_field_filters?
 
-      field_keys = Array(params[:field_key])
-      s.joins(form_submission_values: :form_field)
-       .where(form_fields: { key: field_keys })
-       .distinct
+      all_conditions = []
+      all_bind_values = []
+
+      field_filters.each do |field_key, values|
+        value_conditions = values.map { "JSON_UNQUOTE(form_submission_values.value) LIKE ?" }.join(" OR ")
+
+        all_conditions << "EXISTS (
+          SELECT 1 FROM form_submission_values
+          INNER JOIN form_fields ON form_fields.id = form_submission_values.form_field_id
+          WHERE form_submission_values.form_submission_id = form_submissions.id
+            AND form_fields.key = ?
+            AND (#{value_conditions})
+        )"
+
+        all_bind_values << field_key
+        all_bind_values.concat(values.map { |v| "%#{v}%" })
+      end
+      s.where(all_conditions.join(" AND "), *all_bind_values)
     end
 
     def filter_by_search(s)
@@ -71,16 +85,49 @@ module FormSubmissions
     end
 
     def apply_order(s)
-      column = params[:order_by]
-      direction = params[:order_dir] || "asc"
-      return s.order(created_at: :desc) unless valid_order?(column, direction)
+      return s.order(created_at: :desc) unless valid_order?
 
-      s.order(column => direction)
+      s.order(order_column => order_direction)
     end
 
-    def valid_order?(column, direction)
-      ALLOWED_ORDER_COLUMNS.include?(column) &&
-        ALLOWED_ORDER_DIRECTIONS.include?(direction)
+    def has_field_filters?
+      params.keys.any? { |key| key.to_s.start_with?(FILTER_PREFIX) }
+    end
+
+    def field_filters
+      result = {}
+
+      params.each do |param_key, param_values|
+        next unless param_key.to_s.start_with?(FILTER_PREFIX)
+
+        field_key = extract_field_key(param_key)
+        values = sanitize_values(param_values)
+
+        result[field_key] = values if values.any?
+      end
+
+      result
+    end
+
+    def extract_field_key(param_key)
+      param_key.to_s.delete_prefix(FILTER_PREFIX).delete_suffix("[]")
+    end
+
+    def sanitize_values(param_values)
+      Array(param_values).compact.reject(&:blank?)
+    end
+
+    def valid_order?
+      ALLOWED_ORDER_COLUMNS.include?(order_column) &&
+        ALLOWED_ORDER_DIRECTIONS.include?(order_direction)
+    end
+
+    def order_column
+      params[:order_by]
+    end
+
+    def order_direction
+      params[:order_dir] || "asc"
     end
   end
 end

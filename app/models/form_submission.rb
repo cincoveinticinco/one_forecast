@@ -8,26 +8,16 @@ class FormSubmission < ApplicationRecord
 
   after_initialize :set_default_status, if: :new_record?
 
-  scope :search_by_submission, ->(search_terms) {
-    return all if search_terms.blank?
+  scope :search_by_submission, ->(search_term) {
+    return all if search_term.blank?
 
-    terms = normalize_search_terms(search_terms)
-    return all if terms.empty?
+    sanitized_term = search_term.to_s.strip
+    return all if sanitized_term.empty?
 
     joins(:form_submission_values)
-      .where(
-        terms.map { "form_submission_values.value LIKE ?" }.join(" OR "),
-        *terms.map { |term| "%#{sanitize_sql_like(term)}%" }
-      )
+      .where("form_submission_values.value LIKE ?", "%#{sanitize_sql_like(sanitized_term)}%")
       .distinct
   }
-
-  def self.normalize_search_terms(search_terms)
-    Array(search_terms)
-      .flat_map { |term| term.to_s.split(/\s+/) }
-      .map(&:strip)
-      .reject(&:blank?)
-  end
 
   private
 
