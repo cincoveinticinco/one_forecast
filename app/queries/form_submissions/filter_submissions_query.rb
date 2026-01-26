@@ -30,6 +30,7 @@ module FormSubmissions
         .then { |s| filter_by_submitted_at_to(s) }
         .then { |s| filter_by_include_deleted(s) }
         .then { |s| filter_by_field_key(s) }
+        .then { |s| filter_by_search(s) }
     end
 
     def filter_by_status(s)
@@ -61,6 +62,12 @@ module FormSubmissions
       s.joins(form_submission_values: :form_field)
        .where(form_fields: { key: field_keys })
        .distinct
+    end
+
+    def filter_by_search(s)
+      return s unless params[:search].present?
+
+      s.search_by_submission(params[:search])
     end
 
     def apply_order(s)
