@@ -96,7 +96,7 @@ class Api::V1::FormTemplatesController < ApplicationController
   end
   private
   def set_tenant
-    @tenant = Tenant.find(params[:tenant_id])
+    @tenant = Tenant.find(params[:tenant_id] || params.dig(:form_template, :tenant_id))
   end
   def set_template
     @template = FormTemplate.friendly.find(params[:form_template_id] || params[:id])
