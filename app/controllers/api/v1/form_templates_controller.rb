@@ -1,7 +1,8 @@
 class Api::V1::FormTemplatesController < ApplicationController
   include Pagy::Backend
   before_action :set_tenant, only: [ :index, :show ]
-  before_action :set_template, except: [ :index, :create, :filter_options, :assign_workflow ]
+  before_action :set_template, except: [ :index, :create, :filter_options ]
+  before_action :set_workflow, only: [ :assign_workflow ]
 
   def index
     query = FormTemplates::FilterQuery.new(
@@ -75,18 +76,26 @@ class Api::V1::FormTemplatesController < ApplicationController
   end
 
   def assign_workflow
-     if @template.update(workflow_id: params[:workflow_id])
-      render json: @template, status: :ok
-    else
-      render json: { errors: @template.errors.full_messages }, status: :unprocessable_entity
-    end
+    FormTemplates::AssignWorkflow.new(
+      form_template: @template,
+      workflow: @workflow
+    ).call
+
+    render json: { message: 'Workflow asignado correctamente' }
+  rescue ActiveRecord::RecordInvalid => e
+      render json: { error: e.message }, status: :unprocessable_entity
   end
+
   private
   def set_tenant
     @tenant = Tenant.find(params[:tenant_id])
   end
   def set_template
     @template = FormTemplate.find(params[:id])
+  end
+
+  def set_workflow
+    @workflow = Workflow.find(params[:workflow_id])
   end
   def form_template_params
     raw = params.require(:form_template).permit(

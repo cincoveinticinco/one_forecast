@@ -42,8 +42,12 @@ class Api::V1::WorkflowsController < ApplicationController
 
   # DELETE /api/v1/workflows/:id
   def destroy
-    @workflow.destroy!
-    head :no_content
+
+    if @workflow.destroy
+      render json: { message: 'Workflow eliminado' }
+    else
+      render json: { errors: @workflow.errors.full_messages }, status: :unprocessable_entity
+    end
   end
 
   private
