@@ -1,10 +1,5 @@
 Rails.application.routes.draw do
   get "health/show"
-  namespace :api do
-    namespace :v1 do
-      get "hello/index"
-    end
-  end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
@@ -20,7 +15,20 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :tenants, only: [ :index, :show, :create, :update, :destroy ] do
-        resources :form_templates, only: [ :index ]
+        resources :form_templates, only: [ :index, :show ] do
+          member do
+            get :tree
+          end
+          resources :form_submissions, only: [ :show, :index,  :create, :update, :destroy ] do
+            collection do
+              get :index, to: "form_submissions#tenant_index"
+            end
+            member do
+              post :submit
+            end
+          end
+          resources :form_submission_values, only: [ :index ]
+        end
         resources :workflows, only: [ :index ]
       end
       resources :workflows, only: [ :show, :create, :update, :destroy ] do
@@ -45,13 +53,20 @@ Rails.application.routes.draw do
           end
         end
         resources :form_submissions, only: [ :index, :show, :create, :update, :destroy ] do
+          collection do
+            get :filter_options
+          end
           member do
             get :tree
-            post :submit
             post :reopen
           end
         end
         resources :form_submission_values, only: [ :index, :show, :create ]
+      end
+      resources :form_submissions, only: [ :index, :show ] do
+        member do
+          patch :autosave
+        end
       end
     end
   end

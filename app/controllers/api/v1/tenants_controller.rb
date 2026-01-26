@@ -1,11 +1,11 @@
 class Api::V1::TenantsController < ApplicationController
+  before_action :set_tenant, only: [ :show ]
   def index
     tenants = Tenant.all
     render json: tenants
   end
   def show
-    tenant = Tenant.find(params[:id])
-    render json: tenant
+    render json: @tenant
   end
   def create
     tenant = Tenant.new(tenant_params)
@@ -31,8 +31,11 @@ class Api::V1::TenantsController < ApplicationController
     head :no_content
   end
 
-  private
 
+  private
+  def set_tenant
+    @tenant = Tenant.friendly.find(params[:id])
+  end
   def tenant_params
     params.require(:tenant).permit(:name)
   end

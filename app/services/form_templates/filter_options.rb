@@ -14,7 +14,7 @@ module FormTemplates
     def self.order_options
       FilterQuery::ALLOWED_ORDER_COLUMNS.flat_map do |column|
         [
-          "#{column}",
+          "#{column}"
         ]
       end
     end

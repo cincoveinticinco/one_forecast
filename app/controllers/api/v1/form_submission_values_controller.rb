@@ -1,16 +1,16 @@
 class Api::V1::FormSubmissionValuesController < ApplicationController
+  before_action :set_tenant, only: [ :index ]
   before_action :set_form_template
-  before_action :set_form_submission, only: :index
+  before_action :set_form_submission, only: [ :index, :create ]
   before_action :set_form_submission_value, only: :show
 
   def index
-    return render json: { error: 'Form submission not found' }, status: :not_found unless @form_submission
+    return render json: { error: "Form submission not found" }, status: :not_found unless @form_submission
 
     render json: FormSubmissionValuesSerializer.new(@form_submission).as_json
   end
 
   def show
-    
   end
 
   def create
@@ -25,8 +25,12 @@ class Api::V1::FormSubmissionValuesController < ApplicationController
 
   private
 
+  def set_tenant
+    @tenant = Tenant.friendly.find(params[:tenant_id])
+  end
+
   def set_form_template
-    @form_template = FormTemplate.find(params[:form_template_id])
+    @form_template = @tenant.form_templates.friendly.find(params[:form_template_id])
   end
 
   def set_form_submission

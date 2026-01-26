@@ -1,9 +1,13 @@
 class Api::V1::FormTemplatesController < ApplicationController
   include Pagy::Backend
-  before_action :set_tenant, only: [ :index, :show ]
+  before_action :set_tenant, only: [ :index, :create ]
   before_action :set_template, except: [ :index, :create, :filter_options ]
   before_action :set_workflow, only: [ :assign_workflow ]
 
+
+  def initialize
+    @fields_service = FormFields::FormFieldService.new
+  end
   def index
     query = FormTemplates::FilterQuery.new(
       scope: @tenant.form_templates,
@@ -85,13 +89,17 @@ class Api::V1::FormTemplatesController < ApplicationController
   rescue ActiveRecord::RecordInvalid => e
       render json: { error: e.message }, status: :unprocessable_entity
   end
-
+  
+  def tree
+    parents = @fields_service.get_tree(@template)
+    render json: parents, status: :ok
+  end
   private
   def set_tenant
     @tenant = Tenant.find(params[:tenant_id])
   end
   def set_template
-    @template = FormTemplate.find(params[:id])
+    @template = FormTemplate.friendly.find(params[:form_template_id] || params[:id])
   end
 
   def set_workflow

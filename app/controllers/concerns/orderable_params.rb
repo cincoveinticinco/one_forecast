@@ -9,7 +9,7 @@ module OrderableParams
   # - ?order_by=name,created_at
   # - ?order_dir=asc|desc
   #
-  def safe_order_hash(model:, default: ["created_at"], default_dir: "desc")
+  def safe_order_hash(model:, default: [ "created_at" ], default_dir: "desc")
     allowed_dir = %w[asc desc].freeze
     allowed_order_by =
       if model.const_defined?(:ORDERABLE_COLUMNS)
@@ -17,10 +17,10 @@ module OrderableParams
       else
         %w[created_at updated_at name]
       end
-    
-    order_dir = params['order_dir'].to_s.presence_in(allowed_dir) || default_dir
 
-    raw = Array.wrap(params['order_by'])
+    order_dir = params["order_dir"].to_s.presence_in(allowed_dir) || default_dir
+
+    raw = Array.wrap(params["order_by"])
               .flat_map { |v| v.to_s.split(",") }
               .map(&:strip)
 

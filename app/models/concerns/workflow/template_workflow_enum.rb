@@ -3,13 +3,13 @@ module Workflow::TemplateWorkflowEnum
 
   included do
     enum :workflow_type, {
-      form_submission: "form_submission",
+      form_submission: "form_submission"
     }
 
 
     enum :status, {
       active: "active",
-      inactive: "inactive",
+      inactive: "inactive"
     }
 
 
@@ -18,7 +18,7 @@ module Workflow::TemplateWorkflowEnum
     validates :status, presence: true
 
     private
-    
+
     def set_default_status
       self.status ||= "active"
     end

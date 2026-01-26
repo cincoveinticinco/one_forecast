@@ -12,8 +12,8 @@ class CreateFormTemplates < ActiveRecord::Migration[8.0]
 
       t.timestamps
     end
-    add_index :form_templates, [:tenant_id, :slug], unique: true
-    add_index :form_templates, [:tenant_id, :template_type]
-    add_index :form_templates, [:tenant_id, :status]
+    add_index :form_templates, [ :tenant_id, :slug ], unique: true
+    add_index :form_templates, [ :tenant_id, :template_type ]
+    add_index :form_templates, [ :tenant_id, :status ]
   end
 end

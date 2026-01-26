@@ -1,41 +1,36 @@
 class Api::V1::FormSubmissionsController < ApplicationController
-  before_action :set_form_template
-  before_action :set_form_submission, except: [ :index, :create ]
+  include Pagy::Backend
+  before_action :set_form_template, :set_tenant, only: [ :tenant_index, :show, :create, :update, :destroy, :submit ]
+  before_action :set_form_template_no_slug, only: [ :tree, :index, :filter_options  ]
+  before_action :set_form_submission, only: [ :show, :reopen, :tree, :autosave, :submit ]
 
   def initialize
     @submission_service = FormSubmissions::FormSubmissionService.new
   end
 
-  def index
-    form_submissions = @form_template.form_submissions.where(deleted_at: nil)
+  def tenant_index
+    render json: serialize_submissions(@form_template.form_submissions)
+  end
 
-    render json: form_submissions.map { |fs|
-      FormSubmissionSerializer.new(fs, view: :detailed).as_json
-    }
+  def index
+    query = FormSubmissions::FilterSubmissionsQuery.new(scope: @form_template.form_submissions, params: params)
+    pagy, form_submissions = pagy(query.call, page: params[:page], limit: params[:limit])
+    submission_data = serialize_submission(form_submissions, :response_view)
+
+    render json: { data: submission_data, pagination: pagination_data(pagy) }
   end
 
   def show
-    render json: FormSubmissionSerializer.new(@form_submission, view: :detailed).as_json
+    render_submission_response(@form_submission, :detailed)
   end
 
   def create
-    form_submission = @form_template.form_submissions.create(
-      form_submission_params
-    )
-
-    if form_submission.save
-      render json: FormSubmissionSerializer.new(form_submission, view: :detailed).as_json
-    else
-      render json: { errors: form_submission.errors.full_messages }, status: :unprocessable_entity
-    end
+    form_submission = @form_template.form_submissions.create(form_submission_params)
+    form_submission.save ? render_submission_response(form_submission, :detailed) : render_error_response(form_submission.errors.full_messages)
   end
 
   def update
-    if @submission_service.update_submission(@form_submission, form_submission_params)
-      render json: FormSubmissionSerializer.new(@form_submission, view: :detailed).as_json
-    else
-      render json: { errors: @form_submission.errors.full_messages }, status: :unprocessable_entity
-    end
+    @submission_service.update_submission(@form_submission, form_submission_params) ? render_submission_response(@form_submission, :detailed) : render_error_response(@form_submission.errors.full_messages)
   end
 
   def destroy
@@ -44,33 +39,61 @@ class Api::V1::FormSubmissionsController < ApplicationController
   end
 
   def submit
-    submission = FormSubmissions::Submit.new(@form_submission).call
-    render json: FormSubmissionSerializer.new(submission).as_json
+    render_submission_response(FormSubmissions::Submit.new(@form_submission).call)
   end
 
   def reopen
-    submission = FormSubmissions::Reopen.new(@form_submission).call
-    render json: FormSubmissionSerializer.new(submission).as_json
+    render_submission_response(FormSubmissions::Reopen.new(@form_submission).call)
   end
 
   def tree
-    fields_service = FormFields::FormFieldService.new
-    parents = fields_service.get_tree(
-      @form_template,
-      @form_submission
-    )
-
-    render json: parents, status: :ok
+    parents = FormFields::FormFieldService.new.get_tree(@form_template, @form_submission)
+    render json: parents
   end
+
+  def autosave
+    value = FormSubmissionValues::Autosave.new(form_submission: @form_submission, field_key: autosave_params[:field_key], value: autosave_params[:value]).call
+    render json: { id: value.id, field_key: value.form_field.key, value: value.value }
+  end
+
+  def filter_options
+    render json: FormSubmissions::FilterOptions.new(@form_template).call
+  end
+
   private
 
+  def serialize_submission(submission, view = :default)
+    FormSubmissionSerializer.new(submission, view: view).as_json
+  end
+
+  def serialize_submissions(submissions, view = :detailed)
+    submissions.map { |fs| serialize_submission(fs, view) }
+  end
+
+  def render_submission_response(submission, view = :detailed, status = :ok)
+    render json: serialize_submission(submission, view), status: status
+  end
+
+  def render_error_response(errors, status = :unprocessable_entity)
+    render json: { errors: errors }, status: status
+  end
+
+  def set_tenant
+    @tenant = Tenant.friendly.find(params[:tenant_id])
+  end
+
   def set_form_template
+    @form_template = @tenant.form_templates.friendly.find(params[:form_template_id])
+  end
+
+  def set_form_template_no_slug
     @form_template = FormTemplate.find(params[:form_template_id])
   end
 
   def set_form_submission
-    @form_submission = @form_template.form_submissions.find(params[:id])
+    @form_submission = FormSubmission.find(params[:id])
   end
+
   def form_submission_params
     params.require(:form_submission).permit(
       :status,
@@ -81,5 +104,9 @@ class Api::V1::FormSubmissionsController < ApplicationController
         :value
       ]
     )
+  end
+
+  def autosave_params
+    params.permit(:field_key, :value, :id, form_submission: {})
   end
 end

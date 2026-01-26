@@ -6,8 +6,11 @@ module FormSubmissions
     end
 
     def call
-      validate_required_fields_presence
-      validate_values_content
+      required_fields.each do |field|
+        next unless visible?(field)
+        validate_required_field(field)
+        validate_values_content(field)
+      end
 
       errors
     end
@@ -15,36 +18,36 @@ module FormSubmissions
     private
     attr_reader :errors
 
-    def validate_required_fields_presence
-      required_fields = @form_submission
-        .form_template
-        .form_fields
-        .where(required: true)
-
-      submitted_field_ids = @form_submission
-        .form_submission_values
-        .pluck(:form_field_id)
-
-      required_fields.each do |field|
-        next if submitted_field_ids.include?(field.id)
-        errors << missing_required_error(field)
-      end
+    def form_fields
+      @form_fields ||= @form_submission.form_template.form_fields
     end
 
-    def validate_values_content
-      submitted_values = @form_submission
+    def required_fields
+      @required_fields ||= form_fields.where(required: true)
+    end
+
+    def submitted_field_ids
+      @submitted_field_ids ||= @form_submission
+        .form_submission_values
+        .pluck(:form_field_id)
+    end
+
+    def submitted_values
+      @submitted_values ||= @form_submission
         .form_submission_values
         .includes(:form_field)
         .index_by(&:form_field_id)
-
-      @form_submission.form_template.form_fields.each do |field|
-        value_record = submitted_values[field.id]
-        next if value_record.nil?
-        validate_field_value(field, value_record)
-      end
     end
 
-    def validate_field_value(field, value_record)
+    def validate_required_field(field)
+      return if submitted_field_ids.include?(field.id)
+
+      errors << missing_required_error(field)
+    end
+
+    def validate_values_content(field)
+      value_record = submitted_values[field.id]
+      return if value_record.nil?
       validate_by_field_type(field, value_record)
       validate_by_rules(field, value_record)
     end
@@ -87,6 +90,19 @@ module FormSubmissions
           message: validator.message
         }
       end
+    end
+
+    def visible?(field)
+      visibility_evaluator(field).visible?
+    end
+
+    def visibility_evaluator(field)
+      available_keys = form_fields.map { |f| { id: f.id, key: f.key } }
+      FormFields::Visibility::Evaluator.new(
+        form_field: field,
+        submission_values: submitted_values,
+        available_keys: available_keys
+      )
     end
 
     def missing_required_error(field)
