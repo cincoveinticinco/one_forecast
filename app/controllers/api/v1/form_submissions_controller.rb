@@ -1,6 +1,6 @@
 class Api::V1::FormSubmissionsController < ApplicationController
   include Pagy::Backend
-  before_action :set_form_template, :set_tenant, only: [ :tenant_index, :show, :create, :update, :destroy, :submit ]
+  before_action :set_tenant, :set_form_template, only: [ :tenant_index, :show, :create, :update, :destroy, :submit ]
   before_action :set_form_template_no_slug, only: [ :tree, :index, :filter_options  ]
   before_action :set_form_submission, only: [ :show, :reopen, :tree, :autosave, :submit ]
 
