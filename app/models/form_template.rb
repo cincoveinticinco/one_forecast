@@ -11,6 +11,9 @@ class FormTemplate < ApplicationRecord
     where.not(field_type: [ "heading", "subheading", "paragraph", "section", "block" ])
       .order(:order_index)
   }, class_name: "FormField"
+  has_many :selectable_fields, -> {
+    where(field_type: [ "select", "multiselect" ]).order(:order_index)
+  }, class_name: "FormField"
   has_many :form_submissions, dependent: :restrict_with_error, inverse_of: :form_template
 
   friendly_id :slug, use: :slugged
