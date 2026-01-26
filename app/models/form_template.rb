@@ -1,5 +1,6 @@
 class FormTemplate < ApplicationRecord
   extend FriendlyId
+  include Slugable
   # Concerns
   include TemplateEnum
   # Associations
@@ -19,13 +20,8 @@ class FormTemplate < ApplicationRecord
   friendly_id :slug, use: :slugged
 
   # Validations
-  validates :name, :slug, presence: true
-  validates :slug, uniqueness: { scope: :tenant_id }
-  validates :slug,
-          format: {
-            with: /\A[a-zA-Z0-9_-]+\z/,
-            message: :invalid_slug_format
-          }
+  validates :name, presence: true
+  configure_slug_uniqueness(scope: :tenant_id)
 
   TEMPLATE_TYPES = template_types.keys
   STATUSES       = statuses.keys

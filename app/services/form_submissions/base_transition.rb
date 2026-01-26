@@ -1,6 +1,5 @@
 module FormSubmissions
   class BaseTransition
-
     def initialize(form_submission)
       @form_submission = form_submission
     end

@@ -13,7 +13,7 @@ module FormTemplates
       end
 
       private
-      
+
       attr_reader :form_template
 
       def validate!

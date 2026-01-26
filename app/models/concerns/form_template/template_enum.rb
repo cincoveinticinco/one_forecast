@@ -19,15 +19,14 @@ module FormTemplate::TemplateEnum
       archived: "archived"
     }
 
-    validates :template_type, :access_type, presence: true
-    validates :slug, presence: true, uniqueness: { scope: :tenant_id }
+validates :template_type, :access_type, presence: true
 
-    before_validation :set_default_status, on: :create
+before_validation :set_default_status, on: :create
 
     validates :status, presence: true
 
     private
-    
+
     def set_default_status
       self.status ||= "draft"
     end

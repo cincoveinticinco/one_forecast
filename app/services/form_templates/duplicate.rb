@@ -48,12 +48,12 @@ module FormTemplates
       base_slug = "#{form_template.slug}-copy"
       counter = 1
       new_slug = base_slug
-      
+
       while FormTemplate.exists?(slug: new_slug, tenant: form_template.tenant)
       counter += 1
       new_slug = "#{base_slug}-#{counter}"
       end
-      
+
       new_slug
     end
   end

@@ -2,7 +2,7 @@ class WorkflowSerializer
   def initialize(workflows)
     @workflows = workflows
   end
-  
+
   def as_json(*)
     if @workflows.is_a?(ActiveRecord::Relation) || @workflows.is_a?(Array)
       serialize_collection
@@ -10,11 +10,11 @@ class WorkflowSerializer
       serialize_single
     end
   end
-  
+
   private
 
   def serialize_collection
-    return @workflows.map do |workflow|
+    @workflows.map do |workflow|
       {
         id: workflow.id,
         name: workflow.name,
