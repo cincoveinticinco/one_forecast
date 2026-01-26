@@ -85,11 +85,11 @@ class Api::V1::FormTemplatesController < ApplicationController
       workflow: @workflow
     ).call
 
-    render json: { message: 'Workflow asignado correctamente' }
+    render json: { message: "Workflow asignado correctamente" }
   rescue ActiveRecord::RecordInvalid => e
       render json: { error: e.message }, status: :unprocessable_entity
   end
-  
+
   def tree
     parents = @fields_service.get_tree(@template)
     render json: parents, status: :ok
