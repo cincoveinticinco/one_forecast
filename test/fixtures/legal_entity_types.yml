@@ -1,0 +1,21 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+persona_natural:
+  tenant: default
+  key: persona_natural
+  name: Persona Natural
+  status: active
+
+persona_juridica:
+  tenant: default
+  key: persona_juridica
+  name: Persona Jurídica
+  status: active
+  allowed_country_codes: ["CO", "US", "MX"]
+
+extranjero:
+  tenant: default
+  key: extranjero
+  name: Extranjero
+  status: active
+  not_allowed_country_codes: ["CO"]

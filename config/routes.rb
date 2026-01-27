@@ -30,6 +30,8 @@ Rails.application.routes.draw do
           resources :form_submission_values, only: [ :index ]
         end
         resources :workflows, only: [ :index ]
+        resources :legal_entity_types, only: [ :index, :create ]
+        resources :legal_entities, only: [ :index ]
       end
       resources :workflows, only: [ :show, :create, :update, :destroy ] do
         collection do
@@ -38,6 +40,7 @@ Rails.application.routes.draw do
         resources :workflow_steps, only: [ :index, :create ]
       end
       resources :workflow_steps, only: [ :show, :update, :destroy ]
+      resources :legal_entity_types, only: [ :show, :update, :destroy ]
       resources :form_templates, only: [ :show, :create, :update, :destroy ] do
         collection do
           get :filter_options

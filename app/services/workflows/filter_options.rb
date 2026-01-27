@@ -2,8 +2,8 @@ module Workflows
   class FilterOptions
     def self.call
       {
-        status: Workflow.distinct.pluck(:status),
-        workflow_type: Workflow.distinct.pluck(:workflow_type),
+        workflow_types: Workflow::WORKFLOW_TYPES,
+        statuses: Workflow::STATUSES,
         order: order_options
       }
     end
