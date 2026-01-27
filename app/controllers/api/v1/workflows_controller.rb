@@ -2,17 +2,28 @@ class Api::V1::WorkflowsController < ApplicationController
   include Pagy::Backend
   before_action :set_tenant, only: [ :index ]
   before_action :set_workflow, only: [ :show, :update, :destroy ]
+  skip_before_action :set_tenant, only: [ :filter_options ]
 
   # GET /api/v1/tenants/:tenant_id/workflows
   def index
+    query = Workflows::FilterQuery.new(
+      scope: @tenant.workflows,
+      params: params
+    )
     pagy, workflows = pagy(
-      @tenant.workflows,
-      page: params[:page]
+      query.call,
+      page: params[:page],
+      limit: params[:limit]
     )
     render json: {
       data: WorkflowSerializer.new(workflows).as_json,
       pagination: pagination_data(pagy)
     }, status: :ok
+  end
+
+  # GET /api/v1/workflows/filter_options
+  def filter_options
+    render json: Workflows::FilterOptions.call
   end
 
   # GET /api/v1/workflows/:id
