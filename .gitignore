@@ -35,3 +35,7 @@
 
 # Ignore project context file
 CONTEXT.md
+
+*.log
+*.tmp
+node_modules/
