@@ -8,13 +8,15 @@
         </div>
     
         <div class="col-10">
-            <app-layout #layoutRef [layout]="layout"></app-layout>
-            
-            @if (form) {
-                <form [formGroup]="form">
-                    <app-action-buttons [disableNext]="form.invalid" (submit)="sendSubmission()"></app-action-buttons>
-                </form>
-            }
+            <div class="w-9 m-auto">
+                <app-layout #layoutRef [layout]="layout"></app-layout>
+                
+                @if (form) {
+                    <form [formGroup]="form">
+                        <app-action-buttons [disableNext]="form.invalid" (submit)="sendSubmission()"></app-action-buttons>
+                    </form>
+                }
+            </div>
         </div>
     </div>
 } @else if (!loading && layout.blocks?.length! === 0) {

@@ -72,3 +72,23 @@ h3 {
 .p-dialog-header {
   padding-bottom: 3px !important;
 }
+
+.p-button.p-button-primary {
+  border-width: 2px;
+  border-style: solid;
+  background-color: #1afa8a;
+  border-color: #085e35;
+  color: #085e35;
+  border-radius: 0px;
+  opacity: 1 !important;
+}
+
+.p-button.p-button-info {
+  border-width: 2px;
+  border-style: solid;
+  background-color: #fff;
+  border-color: #1acffa;
+  color: #1acffa;
+  border-radius: 0px;
+  opacity: 1 !important;
+}

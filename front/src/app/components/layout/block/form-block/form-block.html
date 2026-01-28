@@ -1,5 +1,5 @@
 @if (config.label) {
-    <h2 class="font-semibold mb-0" #formBlock [id]="block.config.key" [innerHTML]="config.label | safeHtml"></h2>
+    <h2 class="font-medium mb-0 text-2xl" #formBlock [id]="block.config.key" [innerHTML]="config.label | safeHtml"></h2>
     <hr class="separator">
 }
 <form [formGroup]="form" (focusin)="onFocusIn()">
