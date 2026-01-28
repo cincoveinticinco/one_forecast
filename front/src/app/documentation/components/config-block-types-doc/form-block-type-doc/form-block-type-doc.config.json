@@ -1,0 +1,7 @@
+[
+    {
+        "property": "form",
+        "description": "Specifies the form control associated with this block.",
+        "type": "IControl"
+    }
+]

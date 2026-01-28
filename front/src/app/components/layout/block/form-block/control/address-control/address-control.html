@@ -1,0 +1,9 @@
+<div [formGroup]="formContext" class="form-group">
+    <div class="formgrid grid">
+        @for(block of blocks; track block.id) {
+            <div id="{{block.id}}" class="{{block.config.classes || 'col-12'}}">
+                 <app-control-block [block]="block"></app-control-block>
+            </div>
+        }
+    </div>
+</div>

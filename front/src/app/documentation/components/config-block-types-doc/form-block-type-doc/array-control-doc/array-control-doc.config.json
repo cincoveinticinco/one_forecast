@@ -1,0 +1,12 @@
+[
+    {
+        "property": "controls",
+        "description": "An array of form groups contained within the array control",
+        "type": "IControl[]"
+    },
+    {
+        "property": "add_config",
+        "description": "Configuration for the 'Add' button to add new items to the array",
+        "type": "IAddConfig"
+    }
+]

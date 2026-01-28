@@ -1,0 +1,7 @@
+[
+    {
+        "property": "controls",
+        "description": "Specifies the form controls within the form group.",
+        "type": "IControl[]"
+    }
+]

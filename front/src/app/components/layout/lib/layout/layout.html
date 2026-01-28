@@ -1,0 +1,13 @@
+@if (load) {
+    @if (layout.title) {<h1 class="text-5xl font-medium text-center text-primary my-4">{{ layout.title }}</h1>}
+    <form novalidate [formGroup]="form" class="core-layout">
+        <div class="row">
+            @for(block of layout.blocks; track i; let i = $index) {
+                <div [id]="i" class="{{block?.config.classes || 'col-12'}}">
+                    <app-block [block]="block"></app-block>
+                </div>
+            }
+        </div>
+    </form>
+
+}

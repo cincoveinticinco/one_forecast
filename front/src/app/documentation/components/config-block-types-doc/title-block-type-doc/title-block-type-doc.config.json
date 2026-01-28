@@ -1,0 +1,12 @@
+[
+    {
+        "property": "value",
+        "description": "The title value",
+        "type": "string"
+    },
+    {
+        "property": "has_separator",
+        "description": "Indicates whether a separator line should be displayed below the title.",
+        "type": "boolean"
+    }
+]

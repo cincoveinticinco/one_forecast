@@ -1,0 +1,25 @@
+<form [formGroup]="parentForm">
+    <div [formArrayName]="block.config.id">
+        <div class="formgrid grid align-items-end">
+            @if(ready) {
+                @for(b of block.children; track b.id; let i = $index) {
+                    <div id="{{b.id}}" class="{{b.config?.classes || 'col-12 py-2'}}">
+                        <div class="formgrid grid align-items-center">
+                            <div [ngClass]="{'col-11': i > 0, 'col-12': i === 0}">
+                                <app-block [block]="b"></app-block>
+                            </div>
+                            @if (i > 0) {
+                                <div class="col">
+                                    <i class="pi pi-trash invalid cursor-pointer" (click)="deleteBlock(b.config.id)"></i>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+            }
+            <div class="pb-2 col-1">
+                <p-button label="Add" (click)="addBlock()" />
+            </div>
+        </div>
+    </div>
+</form>

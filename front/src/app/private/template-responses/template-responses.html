@@ -1,0 +1,11 @@
+@if (columns().length > 0) {
+    <app-table
+        [values]="responses"
+        [columns]="columns()"
+        [pagination]="pagination()"
+        [filtersOptions]="filtersOptions()"
+        [lazyLoad]="getResponses"
+        [searchable]="true"
+        (triggerFilters)="getFilters($event)"
+    ></app-table>
+}

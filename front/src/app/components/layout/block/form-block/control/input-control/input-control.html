@@ -1,0 +1,10 @@
+@if (!control.hidden) {
+    <div [formGroup]="form" class="form-group">
+        <app-label labelBehavior [control]="control"></app-label>
+        <input pInputText [id]="control.key" [formControlName]="control.key!" [type]="control.type!" [placeholder]="control.placeholder! || control.label || ''" />
+        <app-error-control [control]="control"></app-error-control>
+        @if (control.help_text && (formContext.valid || !formContext.dirty)) {
+            <small>{{ control.help_text }}</small>
+        }
+    </div>
+}

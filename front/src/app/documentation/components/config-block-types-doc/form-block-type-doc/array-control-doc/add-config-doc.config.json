@@ -1,0 +1,27 @@
+[
+    {
+        "property": "show_add",
+        "description": "Determines whether the 'Add' button is displayed",
+        "type": "boolean"
+    },
+    {
+        "property": "show_index",
+        "description": "Determines whether the index is displayed",
+        "type": "boolean"
+    },
+    {
+        "property": "add_text",
+        "description": "The text displayed on the 'Add' button",
+        "type": "string"
+    },
+    {
+        "property": "can_remove_first",
+        "description": "Indicates if the first item in the array can be removed",
+        "type": "boolean"
+    },
+    {
+        "property": "limit",
+        "description": "The maximum number of items that can be added to the array",
+        "type": "number"
+    }
+]

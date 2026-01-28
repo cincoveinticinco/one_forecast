@@ -1,0 +1,82 @@
+@if (values) {
+    <div class="w-11 mx-auto">
+        <p-table
+                #table
+                [value]="values"
+                [paginator]="pagination ? true : false"
+                [lazy]="pagination ? true : false"
+                [rows]="pagination.current_count"
+                [totalRecords]="pagination.total_count!"
+                (onLazyLoad)="lazyLoad($event)"
+                [rowsPerPageOptions]="[10, 20, 30]"
+                [showCurrentPageReport]="pagination ? true : false"
+                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            >
+            @if (searchable) {
+                <ng-template #caption>
+                    <div class="flex justify-content-between align-items-center">
+                        <div class="actions flex gap-2">
+                            @for(action of globalActions; track action.key) {
+                                <p-button
+                                    [label]="action.label"
+                                    [icon]="action.icon"
+                                    [severity]="action.severity"
+                                    (click)="triggerAction.emit({ key: action.key!, id: 0 })"
+                                ></p-button>
+                            }
+                        </div>
+                        <div class="search flex justify-content-end gap-2" [formGroup]="filterForm">
+                            <app-filter [filter]="searchFilter"></app-filter>
+                        </div>
+                    </div>
+                </ng-template>
+            }
+            <ng-template #header>
+                <tr>
+                    @for(column of columns; track column.key) {
+                        <th [pSortableColumn]="column.sortable">
+                            {{ column.header }}
+                            @if (column.sortable) {
+                                <p-sortIcon [field]="column.sortable" />
+                            }
+                        </th>
+                    }
+                    @if (actions.length > 0) {
+                        <th></th>
+                    }
+                </tr>
+                @if (hasFilters()) {
+                    <tr>
+                        @for(column of columns; track column.key) {
+                            <th>
+                                @if (column.filter) {
+                                    <div [formGroup]="filterForm">
+                                        <app-filter [filter]="column.filter"></app-filter>
+                                    </div>
+                                }
+                            </th>
+                        }
+                        @if (actions.length > 0) {
+                            <th></th>
+                        }
+                    </tr>
+                }
+            </ng-template>
+            <ng-template #body let-row>
+                <tr>
+                    @for(column of columns; track column.key) {
+                        <td>
+                            <app-cell [column]="column" [row]="row"></app-cell>
+                        </td>
+                    }
+                    @if (actions.length > 0) {
+                        <td>
+                            <p-button icon="pi pi-ellipsis-h" (click)="selectedId = row.id; menu.toggle($event)" [rounded]="true" [text]="true" severity="secondary" />
+                            <p-tieredmenu #menu [model]="getRowActions(row)" [popup]="true" appendTo="body" />
+                        </td>
+                    }
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+}
