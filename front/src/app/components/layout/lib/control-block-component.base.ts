@@ -29,6 +29,7 @@ export abstract class ControlBlockComponentBase implements OnDestroy {
                 if (key === this.control.key && !isNil(data.hidden)) {
                     this.control.hidden = data.hidden;
                     this.control.hidden ? this.formContext.disable() : this.formContext.enable();
+                    this.cdr.detectChanges();
                 }
             });
     }

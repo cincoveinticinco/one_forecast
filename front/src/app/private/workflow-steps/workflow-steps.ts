@@ -93,7 +93,7 @@ export class WorkflowSteps extends DynamicTableBase implements OnInit {
     }
     this.dialog = {
       component: RenderFormLayout,
-      header: 'Edit workflow step',
+      header: 'Create workflow step',
       input_values: {
         layout,
         nextCallback: create

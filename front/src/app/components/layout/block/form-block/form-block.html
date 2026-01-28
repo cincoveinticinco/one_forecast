@@ -6,8 +6,8 @@
     <div class="formgrid grid">
         @if(ready) {
             @for(child of block.children; track child.id) {
-                <div id="{{child.id}}" class="{{child.config?.classes || 'col-12 py-2'}}">
-                     <app-block [block]="child"></app-block>
+                <div id="{{child.id}}" [ngClass]="{'py-0': child.config.hidden}" class="{{child.config?.classes || 'col-12 py-2'}}">
+                    <app-block [block]="child"></app-block>
                 </div>
             }
         }

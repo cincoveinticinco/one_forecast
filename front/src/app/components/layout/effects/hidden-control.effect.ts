@@ -24,8 +24,6 @@ export class HiddenControlEffect extends EffectBaseComponet implements IEffectCo
         const targetControl: AbstractControl = this.treeForm.get(targetPath) as AbstractControl;
         targetControl.valueChanges.pipe(takeUntil(this.destroy))
         .subscribe((value) => {
-            console.log(this.effect.key_control)
-            console.log(!valuePath.includes(value))
             this.layoutStorageService.setKeyData({key: this.effect.key_control!, data: { hidden: !valuePath.includes(value) }});
         })
     }

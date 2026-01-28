@@ -9,6 +9,7 @@ import { Label } from '../../partials/label/label';
 import { ErrorControl } from '../../partials/error-control/error-control';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { LabelBehaviorDirective } from '../../../../../../directives/label-behavior.directive';
+import { JsonPipe } from '@angular/common';
 
 
 @Component({

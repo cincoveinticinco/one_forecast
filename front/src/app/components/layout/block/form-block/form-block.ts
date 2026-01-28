@@ -7,10 +7,11 @@ import { BlockComponentBase } from '../../lib/block-component.base';
 import { ControlBlock } from './control/control-block/control-block';
 import { Block } from '../../lib/block/block';
 import { SafeHtmlPipe } from 'primeng/menu';
+import { JsonPipe, NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-form-block',
-  imports: [ReactiveFormsModule, Block, SafeHtmlPipe],
+  imports: [ReactiveFormsModule, Block, SafeHtmlPipe, JsonPipe, NgClass],
   templateUrl: './form-block.html',
   styleUrl: './form-block.scss',
 })

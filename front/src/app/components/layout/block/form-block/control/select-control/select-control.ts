@@ -14,6 +14,7 @@ import { SelectModule } from 'primeng/select';
 import { LabelBehaviorDirective } from '../../../../../../directives/label-behavior.directive';
 import { Button } from 'primeng/button';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'app-select-control',

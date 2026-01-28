@@ -185,6 +185,45 @@ export const WORKFLOW_STEPS_FORM_LAYOUT: ILayout = {
                     },
                 },
                 {
+                    field_type: 'select',
+                    config: {
+                        classes: 'md:col-12 sm:col-12',
+                        disabled: true,
+                        key: 'allowed_types',
+                        label: 'Allowed types',
+                        value: null,
+                        hidden: true,
+                        validators: [
+                            {
+                                validator_type: 'required',
+                            }
+                        ],
+                        effects: [
+                            {
+                                effect_type: 'hidden',
+                                key_control: 'allowed_types',
+                                target_path: 'workflow_step.step_type',
+                                value_path: ['file_upload']
+                            }
+                        ],
+                        multiple: true,
+                        options: [
+                            {
+                                value: '.pdf',
+                                label: 'PDF',
+                            },
+                            {
+                                value: '.jpg',
+                                label: 'JPG',
+                            },
+                            {
+                                value: '.png',
+                                label: 'PNG',
+                            },
+                        ],
+                    },
+                },
+                {
                     field_type: 'number',
                     config: {
                         classes: 'md:col-12 sm:col-12',
@@ -230,46 +269,6 @@ export const WORKFLOW_STEPS_FORM_LAYOUT: ILayout = {
                                 value_path: ['file_upload']
                             }
                         ],
-                    },
-                },
-                {
-                    field_type: 'select',
-                    config: {
-                        classes: 'md:col-12 sm:col-12',
-                        disabled: true,
-                        key: 'allowed_types',
-                        label: 'Allowed types',
-                        value: null,
-                        hidden: true,
-                        validators: [
-                            {
-                                validator_type: 'required',
-                            }
-                        ],
-                        effects: [
-                            {
-                                effect_type: 'hidden',
-                                key_control: 'allowed_types',
-                                target_path: 'workflow_step.step_type',
-                                value_path: ['file_upload']
-                            }
-                        ],
-                        multiple: true,
-                        options: [
-                            {
-                                value: '.pdf',
-                                label: 'PDF',
-                            },
-                            {
-                                value: '.jpg',
-                                label: 'JPG',
-                            },
-                            {
-                                value: '.png',
-                                label: 'PNG',
-                            },
-                        ],
-                        searchable: true
                     },
                 },
             ]
