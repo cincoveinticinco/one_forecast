@@ -20,7 +20,7 @@
                                 <p-button
                                     [label]="action.label"
                                     [icon]="action.icon"
-                                    [severity]="action.severity"
+                                    [severity]="action.severity || 'info'"
                                     (click)="triggerAction.emit({ key: action.key!, id: 0 })"
                                 ></p-button>
                             }

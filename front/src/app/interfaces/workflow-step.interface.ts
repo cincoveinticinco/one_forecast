@@ -6,13 +6,8 @@ export interface IWorkflowStep {
     form_template_id?:     number;
     assignees?:            Assignee[];
     actions_enabled?:      string[];
-    actions?:              Actions;
+    actions?:              Record<string, On[]>;
     file_upload_settings?: FileUploadSettings;
-}
-
-export interface Actions {
-    on_enter:  On[];
-    on_reject: On[];
 }
 
 export interface On {

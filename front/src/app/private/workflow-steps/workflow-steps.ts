@@ -12,6 +12,7 @@ import { TableLazyLoadEvent } from 'primeng/table';
 import { setDataLayout } from '../../helpers/layout/set-data-layout';
 import { WORKFLOW_STEPS_FORM_LAYOUT } from './config/workflow_steps_form_layout';
 import { RenderFormLayout } from '../../components/render-form-layout/render-form-layout';
+import { transformCreateData } from '../../helpers/workflow_step/transform-create-data';
 
 @Component({
   selector: 'app-workflow-steps',
@@ -85,12 +86,12 @@ export class WorkflowSteps extends DynamicTableBase implements OnInit {
 
   private create = async () => {
     const layout = cloneDeep(WORKFLOW_STEPS_FORM_LAYOUT);
-    const create = async (body: {workflow_step: IWorkflowStep}) => {
-      console.log(body)
-      // await this.workflowStepsService.create(body.workflow_step, this.id);
+    const create = async (body: any) => {
+      const workflow_step: IWorkflowStep = transformCreateData(body);
+      await this.workflowStepsService.create(workflow_step, this.id);
       await this.getSteps();
       this.openToast('success', 'Workflow step created');
-      // this.closeDialog();
+      this.closeDialog();
     }
     this.dialog = {
       component: RenderFormLayout,

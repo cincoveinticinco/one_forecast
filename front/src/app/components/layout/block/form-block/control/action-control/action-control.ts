@@ -43,8 +43,7 @@ export class ActionControl extends ControlBlockComponentBase implements IControl
     let blocks = this.control.children![0].config.blocks;
     this.control.children![0].config.blocks = [...ACTIONS_LAYOUT(this.formContext.value)];
     this.formContext.reset();
-    console.log(this.arrayActions)
-    this.arrayActions.addGroup();
+    this.arrayActions && this.arrayActions.addGroup();
     this.cdr.detectChanges();
     // const actionLayout = ACTIONS_LAYOUT(this.formContext.value);
     // this.control.children = [...actionLayout];

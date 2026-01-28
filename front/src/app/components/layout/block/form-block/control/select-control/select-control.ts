@@ -15,6 +15,7 @@ import { LabelBehaviorDirective } from '../../../../../../directives/label-behav
 import { Button } from 'primeng/button';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { JsonPipe } from '@angular/common';
+import { isArray } from 'lodash';
 
 @Component({
   selector: 'app-select-control',
@@ -37,6 +38,7 @@ export class SelectControl extends ControlBlockComponentBase implements IControl
       .pipe(takeUntilDestroyed())
       .subscribe(({ key, data }) => {
           if (key === this.control.key) {
+            data = isArray(data) ? data : [];
             this.control.options = [...data, ...this.control.options?.filter(option => !option.visible_if)!];
             this.cdr.detectChanges();
           }
