@@ -1,0 +1,18 @@
+.card-input {
+  border: 1px solid #ccc;
+  padding: 8px;
+  min-height: 32px;
+  font-family: monospace;
+  outline: none;
+  white-space: nowrap;
+}
+
+.card-input:empty::before {
+  content: attr(data-placeholder);
+  color: #999;
+  pointer-events: none;
+}
+
+.card-input.invalid {
+  border-color: #f44336;
+}

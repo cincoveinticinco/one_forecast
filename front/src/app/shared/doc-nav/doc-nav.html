@@ -1,0 +1,24 @@
+<!-- <mat-nav-list>
+  @for (menu of docMenuList; track menu.link) {
+    <a
+      mat-list-item
+      routerLink="{{menu.link}}"
+      (click)="$event.preventDefault(); activeLink=menu.link;"
+      [activated]="activeLink === menu.link"
+      >{{menu.title | titlecase}}</a
+    >
+  }
+</mat-nav-list> -->
+<!-- <p-menu [model]="docMenuList" class="flex justify-center" styleClass="w-full md:w-60">
+    <ng-template #submenuheader let-item>
+        <span class="text-primary font-bold">{{ item.label }}</span>
+    </ng-template>
+    <ng-template #item let-item>
+        <a pRipple class="flex items-center px-3 py-2 cursor-pointer">
+            <span class="ms-2">{{ item.label }}</span>
+        </a>
+    </ng-template>
+</p-menu> -->
+<div class="w-full">
+  <p-panelMenu [model]="docMenuList" />
+</div>

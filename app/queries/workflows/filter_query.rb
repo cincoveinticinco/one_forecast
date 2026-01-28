@@ -1,6 +1,11 @@
 module Workflows
   class FilterQuery
-    ALLOWED_ORDER_COLUMNS = %w[name created_at updated_at].freeze
+    ALLOWED_ORDER_COLUMNS = %w[
+    name
+    workflow_type
+    status
+    created_at
+    updated_at].freeze
 
     def initialize(scope:, params:)
       @scope = scope

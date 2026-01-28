@@ -1,0 +1,15 @@
+@if (config.label) {
+    <h2 class="font-semibold mb-0" #formBlock [id]="block.config.key" [innerHTML]="config.label | safeHtml"></h2>
+    <hr class="separator">
+}
+<form [formGroup]="form" (focusin)="onFocusIn()">
+    <div class="formgrid grid">
+        @if(ready) {
+            @for(child of block.children; track child.id) {
+                <div id="{{child.id}}" [ngClass]="{'py-0': child.config.hidden}" class="{{child.config?.classes || 'col-12 py-2'}}">
+                    <app-block [block]="child"></app-block>
+                </div>
+            }
+        }
+    </div>
+</form>

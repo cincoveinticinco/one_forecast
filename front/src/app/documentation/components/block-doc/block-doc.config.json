@@ -1,0 +1,32 @@
+[
+    {
+        "property": "key",
+        "description": "The key associated with the block.",
+        "type": "string"
+    },
+    {
+        "property": "block_type",
+        "description": "The type of block being defined.",
+        "type": "string",
+        "options": [
+            {
+                "option": "title",
+                "description": "Input field that accepts textual data."
+            },
+            {
+                "option": "form",
+                "description": "Input field that accepts only numeric values."
+            }
+        ]
+    },
+    {
+        "property": "classes",
+        "description": "Additional CSS classes to apply to the block.",
+        "type": "string"
+    },
+    {
+        "property": "config",
+        "description": "Configuration settings specific to the block type.",
+        "type": "ITitleBlock  |  IFormBlock"
+    }
+]

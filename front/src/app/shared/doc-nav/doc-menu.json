@@ -1,0 +1,68 @@
+[
+    {
+        "label": "Layout",
+        "items": [
+            {
+                "label": "General information",
+                "routerLink": "/docs/layout"
+            }
+        ]
+    },
+    {
+        "label": "Block",
+        "items": [
+            {
+                "label": "General information",
+                "routerLink": "/docs/block"
+            }
+        ]
+    },
+    {
+        "label": "Config block type",
+        "items": [
+            {
+                "label": "Title block",
+                "routerLink": "/docs/title-block-type"
+            },
+            {
+                "label": "Form block",
+                "items": [
+                    {
+                        "label": "General information",
+                        "routerLink": "/docs/form-block-type"
+                    },
+                    {
+                        "label": "Form control",
+                        "routerLink": "/docs/form-block-type/form-control"
+                    },
+                    {
+                        "label": "Input control",
+                        "routerLink": "/docs/form-block-type/input-control"
+                    },
+                    {
+                        "label": "Array control",
+                        "routerLink": "/docs/form-block-type/array-control"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "label": "Validator",
+        "items": [
+            {
+                "label": "General information",
+                "routerLink": "/docs/validator"
+            }
+        ]
+    },
+    {
+        "label": "Example",
+        "items": [
+            {
+                "label": "Basic example",
+                "routerLink": "/docs/example"
+            }
+        ]
+    }
+]

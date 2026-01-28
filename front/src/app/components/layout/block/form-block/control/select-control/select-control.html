@@ -1,0 +1,31 @@
+@if(!control.hidden) {
+    <div [formGroup]="form">
+        <app-label labelBehavior [control]="control"></app-label>
+        @if (control.multiple) {
+            <p-multiselect [formControlName]="control.key!" [options]="control.options" [optionLabel]="control.option_label" [optionValue]="control.option_value" [placeholder]="control.placeholder || control.label" [selectionLimit]="control.limit_multiple" [filter]="control.searchable" [showToggleAll]="control.can_select_all" class="w-full md:w-80">
+                @if(control.add_options) {
+                    <ng-template #footer>
+                        <div class="p-3 flex justify-between">
+                            <p-button fluid label="Add New" severity="secondary" text styleClass="add" size="small" icon="pi pi-plus" />
+                        </div>
+                    </ng-template>
+                }
+            </p-multiselect>
+        } @else {
+            <p-select [formControlName]="control.key!" [options]="control.options" [optionLabel]="control.option_label" [optionValue]="control.option_value" [placeholder]="control.placeholder || control.label" [filter]="control.searchable" class="w-full md:w-56">
+                @if(control.add_options) {
+                    <ng-template #footer>
+                        <div class="p-3 flex justify-between">
+                            <p-button fluid label="Add New" severity="secondary" text styleClass="add" size="small" icon="pi pi-plus" />
+                        </div>
+                    </ng-template>
+                }
+            </p-select>
+        }
+        <app-error-control [control]="control"></app-error-control>
+        @if (control.help_text && formContext.valid) {
+            <small id="username-help">{{ control.help_text }}</small>
+        }
+    </div>
+}
+

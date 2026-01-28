@@ -4,8 +4,8 @@ class Workflow < ApplicationRecord
   has_many :workflow_steps, -> { order(:order_index) }, dependent: :destroy
 
   validates :name, presence: true
-  validates :workflow_type, presence: true
-  validates :status, presence: true
+  validates :workflow_type, presence: true, exclusion: { in: ["", nil], message: "no puede estar vacío" }
+  validates :status, presence: true, exclusion: { in: ["", nil], message: "no puede estar vacío" }
 
   # Enums
   enum :workflow_type, { vendor_onboarding: "vendor_onboarding", vendor_update: "vendor_update" }

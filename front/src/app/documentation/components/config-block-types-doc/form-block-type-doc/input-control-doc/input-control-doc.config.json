@@ -1,0 +1,36 @@
+[
+    {
+        "property": "placeholder",
+        "description": "Provides a hint to the user of what can be entered in the input field",
+        "type": "string"
+    },
+    {
+        "property": "help_text",
+        "description": "Provides additional help text for the input field",
+        "type": "string"
+    },
+    {
+        "property": "label",
+        "description": "The label for the input field",
+        "type": "string"
+    },
+    {
+        "property": "type",
+        "description": "Specifies the type of the input control",
+        "type": "string",
+        "options": [
+            {
+                "option": "text"
+            },
+            {
+                "option": "password"
+            },
+            {
+                "option": "email"
+            },
+            {
+                "option": "number"
+            }
+        ]
+    }
+]

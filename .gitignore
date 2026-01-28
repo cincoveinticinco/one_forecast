@@ -35,3 +35,28 @@
 
 # Ignore project context file
 CONTEXT.md
+
+# FRONTEND IGNORE
+/front/node_modules
+/front/package-lock.json
+/front/npm-debug.log
+/front/yarn-error.log
+/front/dist
+# Visual Studio Code
+/front/.vscode/*
+/front/!.vscode/settings.json
+/front/!.vscode/tasks.json
+/front/!.vscode/launch.json
+/front/!.vscode/extensions.json
+/front/.history/*
+# Miscellaneous
+/front/.angular/cache
+/front/.sass-cache/
+/front/connect.lock
+/front/coverage
+/front/libpeerconnection.log
+/front/testem.log
+/front/typings
+# System files
+/front/.DS_Store
+/front/Thumbs.db

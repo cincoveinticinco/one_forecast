@@ -1,0 +1,23 @@
+<p class="text-xl font-medium m-0">IValidator</p>
+<app-doc-information [config]="config"></app-doc-information>
+
+
+<p class="text-xl font-medium mb-0 mt-4">Params details</p>
+<p-table [value]="params_details" class="w-8" [tableStyle]="{ 'min-width': '20rem' }">
+    <ng-template #header>
+        <tr>
+            <th>Validator</th>
+            <th>Params type</th>
+            <th>Example</th>
+            <th>Description</th>
+        </tr>
+    </ng-template>
+    <ng-template #body let-params_detail>
+        <tr>
+            <td>{{ params_detail.validator_type }}</td>
+            <td>{{ params_detail.params }}</td>
+            <td>[{{ params_detail.example }}]</td>
+            <td>{{ params_detail.description }}</td>
+        </tr>
+    </ng-template>
+</p-table>

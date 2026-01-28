@@ -1,0 +1,38 @@
+[
+    {
+        "property": "validator_type",
+        "description": "Specifies the type of validator.",
+        "type": "string",
+        "options": [
+            {
+                "option": "required",
+                "description": "Validator to ensure the control has a value."
+            },
+            {
+                "option": "minlength",
+                "description": "Validator to ensure the control's value has a minimum length."
+            },  
+            {
+                "option": "maxlength",
+                "description": "Validator to ensure the control's value does not exceed a maximum length."
+            },
+            {
+                "option": "pattern",
+                "description": "Validator to ensure the control's value matches a specific pattern."
+            },
+            {
+                "option": "min",
+                "description": "Custom validator function."
+            },
+            {
+                "option": "max",
+                "description": "Custom validator function."
+            }
+        ]
+    },
+    {
+        "property": "params",
+        "description": "Specifies the parameters for the validator.",
+        "type": "any[]"
+    }
+]
