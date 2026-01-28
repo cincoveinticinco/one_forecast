@@ -27,5 +27,8 @@ class FormTemplate < ApplicationRecord
   STATUSES       = statuses.keys
   ACCESS_TYPES   = access_types.keys
 
+  TARGET_ENTITIES = ["Vendor", "LegalEntity"].freeze
+  validates :target_entity, inclusion: { in: TARGET_ENTITIES }, allow_nil: true
+
   ORDERABLE_COLUMNS = %w[created_at updated_at name slug status template_type published_at archived_at].freeze
 end

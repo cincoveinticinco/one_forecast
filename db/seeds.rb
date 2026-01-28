@@ -9,3 +9,4 @@
 #   end
 
 load Rails.root.join("db/seeds/countries.rb")
+load Rails.root.join("db/seeds/legal_entity_types.rb")

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_01_22_183151) do
+ActiveRecord::Schema[8.0].define(version: 2026_01_28_120000) do
   create_table "countries", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "code", null: false
     t.string "name", null: false
@@ -72,6 +72,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_22_183151) do
     t.bigint "tenant_id", null: false
     t.string "name", null: false
     t.string "slug", null: false
+    t.string "target_entity"
     t.string "template_type", null: false
     t.string "status", default: "draft", null: false
     t.string "access_type", null: false
@@ -86,6 +87,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_22_183151) do
     t.index ["status"], name: "index_form_templates_on_status"
     t.index ["template_type"], name: "index_form_templates_on_template_type"
     t.index ["tenant_id", "slug"], name: "index_form_templates_on_tenant_id_and_slug", unique: true
+    t.index ["tenant_id", "target_entity"], name: "index_form_templates_on_tenant_id_and_target_entity"
     t.index ["tenant_id"], name: "index_form_templates_on_tenant_id"
     t.index ["workflow_id"], name: "index_form_templates_on_workflow_id"
   end
@@ -99,6 +101,34 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_22_183151) do
     t.index ["slug", "sluggable_type", "scope"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type_and_scope", unique: true, length: { slug: 70, scope: 70 }
     t.index ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type", length: { slug: 140 }
     t.index ["sluggable_type", "sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_type_and_sluggable_id"
+  end
+
+  create_table "legal_entities", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "tenant_id", null: false
+    t.string "country_code", limit: 2, null: false
+    t.bigint "legal_entity_type_id"
+    t.string "tax_id_raw"
+    t.string "tax_id_normalized"
+    t.string "legal_name", null: false
+    t.string "status", default: "active", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["legal_entity_type_id"], name: "index_legal_entities_on_legal_entity_type_id"
+    t.index ["tenant_id", "country_code", "tax_id_normalized"], name: "index_legal_entities_on_tenant_country_tax"
+    t.index ["tenant_id"], name: "index_legal_entities_on_tenant_id"
+  end
+
+  create_table "legal_entity_types", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "tenant_id", null: false
+    t.string "key", null: false
+    t.string "name", null: false
+    t.string "status", default: "active", null: false
+    t.text "allowed_country_codes"
+    t.text "not_allowed_country_codes"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tenant_id", "key"], name: "index_legal_entity_types_on_tenant_id_and_key", unique: true
+    t.index ["tenant_id"], name: "index_legal_entity_types_on_tenant_id"
   end
 
   create_table "tenants", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -144,6 +174,9 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_22_183151) do
   add_foreign_key "form_submissions", "form_templates"
   add_foreign_key "form_templates", "tenants"
   add_foreign_key "form_templates", "workflows"
+  add_foreign_key "legal_entities", "legal_entity_types"
+  add_foreign_key "legal_entities", "tenants"
+  add_foreign_key "legal_entity_types", "tenants"
   add_foreign_key "workflow_steps", "form_templates"
   add_foreign_key "workflow_steps", "workflows"
   add_foreign_key "workflows", "tenants"

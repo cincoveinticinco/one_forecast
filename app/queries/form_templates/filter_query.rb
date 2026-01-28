@@ -30,7 +30,13 @@ module FormTemplates
         .then { |s| filter_by_status(s) }
         .then { |s| filter_by_template_type(s) }
         .then { |s| filter_by_access_type(s) }
+        .then { |s| filter_by_target_entity(s) }
         .then { |s| search(s) }
+
+    def filter_by_target_entity(s)
+      return s unless params[:target_entity].present?
+      s.where(target_entity: params[:target_entity])
+    end
     end
 
     def filter_by_status(s)

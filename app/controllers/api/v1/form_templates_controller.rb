@@ -112,12 +112,14 @@ class Api::V1::FormTemplatesController < ApplicationController
       :template_type,
       :access_type,
       :tenant_id,
-      :workflow_id
+      :workflow_id,
+      :target_entity
     )
 
     sanitize_enum!(raw, :template_type, FormTemplate::TEMPLATE_TYPES)
     sanitize_enum!(raw, :status, FormTemplate::STATUSES)
     sanitize_enum!(raw, :access_type, FormTemplate::ACCESS_TYPES)
+    sanitize_enum!(raw, :target_entity, FormTemplate::TARGET_ENTITIES)
 
     raw
   end

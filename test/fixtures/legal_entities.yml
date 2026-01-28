@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+entity_one:
+  tenant: default
+  legal_entity_type: persona_natural
+  country_code: CO
+  legal_name: Juan Pérez
+  tax_id_raw: 123456789
+  tax_id_normalized: 123456789
+  status: active
+
+entity_two:
+  tenant: default
+  legal_entity_type: persona_juridica
+  country_code: US
+  legal_name: ABC Corporation
+  tax_id_raw: 98-7654321
+  tax_id_normalized: 987654321
+  status: active
