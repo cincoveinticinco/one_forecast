@@ -1,0 +1,12 @@
+@if (!loading()) {
+
+    @for(tenant of tenants(); track tenant.id) {
+        <div class="mb-5">
+            {{tenant.name}}:
+            <p-button class="mr-2" label="View templates" (click)="navigateTo('form_templates', tenant.id!)" />
+            <p-button class="mr-2" label="View workflows" (click)="navigateTo('workflows', tenant.id!)" />
+            <br>
+        </div>
+    }
+
+}

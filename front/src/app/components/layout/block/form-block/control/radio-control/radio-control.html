@@ -1,0 +1,15 @@
+<div [formGroup]="form" class="form-group py-1">
+    <app-label labelBehavior [control]="control"></app-label>
+    <div class="flex flex-wrap gap-4 mt-2">
+        @for (option of control.options; track $index) {
+            <div class="flex items-center">
+                <p-radiobutton [formControlName]="control.key!" [name]="control.key!" [value]="option[control.option_value!] || option['value']" [inputId]="option[control.option_value!] || option['value']" />
+                <label [for]="option[control.option_value!] || option['value']" class="ml-2">{{ option[control.option_name!] || option['name'] }}</label>
+            </div>
+        }
+    </div>
+    <app-error-control [control]="control"></app-error-control>
+    @if (control.help_text && (formContext.valid || !formContext.dirty)) {
+        <small>{{ control.help_text }}</small>
+    }
+</div>

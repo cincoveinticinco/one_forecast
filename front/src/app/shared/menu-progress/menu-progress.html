@@ -1,0 +1,13 @@
+<aside class="progress mt-7">
+
+    @for(section of sections; track section.id;let i = $index) {
+        <div
+            class="step"
+            (click)="activate(section)">
+            <span
+            class="dot"
+            [ngClass]="section.status"></span>
+            <div [hidden]="(sections.length-1) === i" class="line" [ngClass]="section.status"></div>
+        </div>
+    }
+</aside>

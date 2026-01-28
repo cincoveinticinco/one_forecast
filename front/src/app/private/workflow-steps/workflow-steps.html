@@ -1,0 +1,17 @@
+<p-toast />
+<p-confirmdialog />
+
+@if (columns().length > 0) {
+    <app-table
+        [values]="steps"
+        [columns]="columns()"
+        [actions]="actions()"
+        [globalActions]="globalActions()"
+        [pagination]="pagination()"
+        [filtersOptions]="filtersOptions()"
+        [lazyLoad]="getSteps"
+        [searchable]="true"
+        (triggerAction)="handleActions($event)"
+        (triggerFilters)="getFilters($event)"
+    ></app-table>
+}

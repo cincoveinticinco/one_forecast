@@ -1,0 +1,12 @@
+@if (formTemplates) {
+
+    @for(template of formTemplates; track template.id) {
+        <div class="mb-5">
+            {{template.name}}:
+            <p-button class="mr-2" label="Ver fomulario" (click)="viewForm(template.tenant_slug!, template.id!)" />
+            <p-button label="Ver fomulario con resultados" (click)="viewFormResults(template.tenant_slug!, template.id!)" />
+            <br>
+        </div>
+    }
+
+}

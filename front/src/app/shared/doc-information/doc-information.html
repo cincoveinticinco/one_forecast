@@ -1,0 +1,24 @@
+<p-table [value]="config" class="w-8" [tableStyle]="{ 'min-width': '20rem' }">
+    <ng-template #header>
+        <tr>
+            <th>Property</th>
+            <th>Description</th>
+            <th>Type</th>
+            <th>Options</th>
+        </tr>
+    </ng-template>
+    <ng-template #body let-config>
+        <tr>
+            <td>{{ config.property }}</td>
+            <td>{{ config.description }}</td>
+            <td>{{ config.type }}</td>
+            <td>
+                @for (item of config.options; track $index) {
+                    <p>
+                        <p-badge [value]="item.option" severity="secondary" />
+                    </p>
+                }
+            </td>
+        </tr>
+    </ng-template>
+</p-table>

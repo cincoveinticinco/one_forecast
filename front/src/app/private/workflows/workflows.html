@@ -1,0 +1,17 @@
+<p-toast />
+<p-confirmdialog />
+
+@if (columns().length > 0) {
+    <app-table
+        [values]="workflows"
+        [columns]="columns()"
+        [actions]="actions()"
+        [globalActions]="globalActions()"
+        [pagination]="pagination()"
+        [filtersOptions]="filtersOptions()"
+        [lazyLoad]="getWorkflows"
+        [searchable]="true"
+        (triggerAction)="handleActions($event)"
+        (triggerFilters)="getFilters($event)"
+    ></app-table>
+}

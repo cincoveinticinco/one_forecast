@@ -1,0 +1,40 @@
+[
+    {
+        "validator_type": "required",
+        "params": ["------"],
+        "example": "------",
+        "description": "No parameters required."
+    },
+    {
+        "validator_type": "minlength",
+        "params": ["number"],
+        "example": [3],
+        "description": "Minimum number of characters."
+    },
+    {
+        "validator_type": "maxlength",
+        "params": ["number"],
+        "example": [50],
+        "description": "Maximum number of characters."
+    },
+    {
+        "validator_type": "pattern",
+        "params": ["string | RegExp"],
+        "example": [
+        "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"
+        ],
+        "description": "Regular expression used to validate the control value."
+    },
+    {
+        "validator_type": "min",
+        "params": ["number"],
+        "example": [18],
+        "description": "Minimum numeric value."
+    },
+    {
+        "validator_type": "max",
+        "params": ["number"],
+        "example": [65],
+        "description": "Maximum numeric value."
+    }
+]

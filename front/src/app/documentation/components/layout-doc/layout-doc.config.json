@@ -1,0 +1,12 @@
+[
+    {
+        "property": "title",
+        "description": "Specifies the title of the layout.",
+        "type": "string"
+    },
+    {
+        "property": "blocks",
+        "description": "Specifies the array of layout blocks contained within this layout block.",
+        "type": "IBlock[]"
+    }
+]

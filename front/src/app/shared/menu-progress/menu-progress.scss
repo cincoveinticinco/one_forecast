@@ -1,0 +1,46 @@
+.progress {
+  position: relative;
+  padding-left: 1.5rem;
+}
+
+.line {
+    height: 50px;
+    background: #9ca3af;
+    width: 3px;
+}
+
+.step {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  flex-direction: column;
+}
+
+.dot {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: #9ca3af;
+  z-index: 1;
+}
+
+.dot.empty, .line.empty {
+  background: #9ca3af;
+}
+
+.dot.active, .line.active {
+  background: #fafa1b;
+}
+
+.dot.valid, .line.valid {
+  background: #22c55e;
+}
+
+.dot.error, .line.error {
+  background: #ef4444;
+}
+
+.label {
+  font-size: 0.9rem;
+  color: #374151;
+}

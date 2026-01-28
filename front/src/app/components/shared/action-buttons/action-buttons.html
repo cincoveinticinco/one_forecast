@@ -1,0 +1,17 @@
+<div class="grid justify-content-end text-center my-2 px-2">
+    @if (actionConfig.show_cancel) {
+        <div class="col-12 md:col-2 lg:col-2">
+            <p-button severity="secondary" [label]="actionConfig.cancel_text" (click)="cancel.emit()" />
+        </div>
+    }
+    @if (actionConfig.show_back) {
+        <div class="col-12 md:col-2 lg:col-2">
+            <p-button severity="secondary" [label]="actionConfig.back_text" (click)="goBack.emit()" />
+        </div>
+    }
+    @if (actionConfig.show_next) {
+        <div class="col-12 md:col-2 lg:col-2">
+            <p-button [disabled]="disableNext" [label]="actionConfig.next_text" (click)="submit.emit()" />
+        </div>
+    }
+</div>

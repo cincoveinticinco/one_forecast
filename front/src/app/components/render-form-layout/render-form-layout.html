@@ -1,0 +1,22 @@
+@if (!loading && layout.blocks?.length! > 0) {
+    <div class="formgrid grid gap-4">
+    
+        <!-- <div class="col-1">
+            <app-menu-progress></app-menu-progress>
+        </div> -->
+    
+        <div class="col-12">
+            <app-layout #layoutRef [layout]="layout"></app-layout>
+            
+            @if (form) {
+                <form [formGroup]="form">
+                    <app-action-buttons [disableNext]="form.invalid" (submit)="next()"></app-action-buttons>
+                </form>
+            }
+        </div>
+    </div>
+} @else if (!loading && layout.blocks?.length! === 0) {
+    This form does not exist
+} @else {
+    loading...
+}
