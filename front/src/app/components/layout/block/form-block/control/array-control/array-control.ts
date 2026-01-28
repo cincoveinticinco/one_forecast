@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ControlContainer, FormArray, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ControlBlockComponentBase } from '../../../../lib/control-block-component.base';
 import { IControlComponent } from '../../../../interfaces/control-component.interface';
@@ -8,15 +8,17 @@ import { isNil, isNumber, last } from 'lodash';
 import { IArrayControl, IArrayGroup } from './array-control.interface';
 import { ControlBlock } from '../control-block/control-block';
 import { Button } from 'primeng/button';
+import { SafeHtmlPipe } from 'primeng/menu';
 
 @Component({
   selector: 'app-array-control',
-  imports: [ReactiveFormsModule, ControlBlock, Button],
+  imports: [ReactiveFormsModule, ControlBlock, Button, SafeHtmlPipe],
   templateUrl: './array-control.html',
   styleUrl: './array-control.scss',
 })
-export class ArrayControl extends ControlBlockComponentBase implements IControlComponent {
+export class ArrayControl extends ControlBlockComponentBase implements IControlComponent, OnInit {
 
+  @Input() init!: boolean;
   declare control: IArrayControl;
   declare formContext: FormArray;
   protected groups: IArrayGroup[] = [];
@@ -28,6 +30,12 @@ export class ArrayControl extends ControlBlockComponentBase implements IControlC
     super(controlContainer, formService);
   }
 
+  ngOnInit(): void {
+    if (this.init) {
+      this.load(this.control);
+    }
+  }
+
   load(control: IControl): void {
     super.add(control, 'array');
     this.addGroups();
@@ -37,7 +45,7 @@ export class ArrayControl extends ControlBlockComponentBase implements IControlC
     this.formService.addControl(this.formContext, control, form_type);
   }
   
-  protected addGroup() {
+  addGroup() {
     const lastGroup = this.groups[this.groups.length - 1];
     if (this.groups.length === this.control.add_config?.limit) {
       throw {code: 'limit-was-reach-out', message: "Limit was reach out"}

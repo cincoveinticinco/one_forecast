@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, effect, inject, OnDestroy } from "@angular/core";
+import { ChangeDetectorRef, Component, effect, inject, Input, OnDestroy } from "@angular/core";
 import { IControl } from "../interfaces/control.interface";
 import { AbstractControl, ControlContainer, FormGroup } from "@angular/forms";
 import { Subject } from "rxjs";
@@ -9,7 +9,7 @@ import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 
 @Component({ template: '' })
 export abstract class ControlBlockComponentBase implements OnDestroy {
-    control!: IControl;
+    @Input()control!: IControl;
 
     protected form!: FormGroup;
     protected formContext!: AbstractControl;

@@ -6,4 +6,4 @@ export interface IBlock {
     children?: IBlock[]
 }
 
-type FieldType = 'toggle' | 'section' | 'heading' | 'paragraph' | 'array' | 'text' | 'email' | 'number' | 'select' | 'textarea' | 'currency' | 'date' | 'phone' | 'address' | 'selectdisabled' | 'radio' | 'check' | 'autocomplete' | 'creditcardnumber' | 'file' | 'multiple' ;
+type FieldType = 'toggle' | 'section' | 'heading' | 'paragraph' | 'array' | 'text' | 'email' | 'number' | 'select' | 'textarea' | 'currency' | 'date' | 'phone' | 'address' | 'selectdisabled' | 'radio' | 'check' | 'autocomplete' | 'creditcardnumber' | 'file' | 'multiple' | 'action';

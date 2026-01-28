@@ -1,32 +1,37 @@
-<div [formGroup]="form">
-    <div [formArrayName]="control.key">
-        @for (group of groups; track group.id; let i = $index) {
-            @if(!isNull(group.id)) {
-                <div [formGroupName]="i" class="formgrid grid mb-2">
-                    <div class="flex gap-2 align-items-center justify-content-center col-fixed" style="width:45px">
-                        @if (control.add_config?.can_remove_first || i > 0) {
-                            <i class="pi pi-trash invalid cursor-pointer" (click)="deleteGroup(i)"></i>
-                        }
-                        @if (control.add_config?.show_index) {
-                            <p class="font-semibold text-xl">{{ i + 1 }}</p>
-                        }
-                    </div>
-                    <div class="col border-left-1">
-                        <div class="formgrid grid">
-                            @for(block of group.blocks; track block.id) {
-                                <div id="{{block.id}}" class="{{block.config?.classes || 'col-12 py-2'}}">
-                                    <app-control-block [block]="block"></app-control-block>
-                                </div>
+@if (!control.hidden) {
+    @if (control.label) {
+        <h2 class="font-semibold m-0 mb-3" #formBlock [id]="control.key" [innerHTML]="control.label | safeHtml"></h2>
+    }
+    <div [formGroup]="form">
+        <div [formArrayName]="control.key">
+            @for (group of groups; track group.id; let i = $index) {
+                @if(!isNull(group.id)) {
+                    <div [formGroupName]="i" class="formgrid grid mb-2">
+                        <div class="flex gap-2 align-items-center justify-content-center col-fixed" style="width:45px">
+                            @if (control.add_config?.can_remove_first || i > 0) {
+                                <i class="pi pi-trash invalid cursor-pointer" (click)="deleteGroup(i)"></i>
+                            }
+                            @if (control.add_config?.show_index) {
+                                <p class="font-semibold text-xl">{{ i + 1 }}</p>
                             }
                         </div>
+                        <div class="col border-left-1">
+                            <div class="formgrid grid">
+                                @for(block of group.blocks; track block.id) {
+                                    <div id="{{block.id}}" class="{{block.config?.classes || 'col-12 py-2'}}">
+                                        <app-control-block [block]="block"></app-control-block>
+                                    </div>
+                                }
+                            </div>
+                        </div>
                     </div>
-                </div>
+                }
             }
+        </div>
+        @if (control.add_config?.show_add) {
+            <div class="col-12 md:col-2 lg:col-2 mt-4">
+                <p-button [disabled]="groups.length === control.add_config?.limit" [label]="control.add_config?.add_text" (click)="addGroup()" />
+            </div>
         }
     </div>
-    @if (control.add_config?.show_add) {
-        <div class="col-12 md:col-2 lg:col-2 mt-4">
-            <p-button [disabled]="groups.length === control.add_config?.limit" [label]="control.add_config?.add_text" (click)="addGroup()" />
-        </div>
-    }
-</div>
+}

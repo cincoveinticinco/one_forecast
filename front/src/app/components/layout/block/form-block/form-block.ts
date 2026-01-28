@@ -11,7 +11,7 @@ import { JsonPipe, NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-form-block',
-  imports: [ReactiveFormsModule, Block, SafeHtmlPipe, JsonPipe, NgClass],
+  imports: [ReactiveFormsModule, Block, SafeHtmlPipe, NgClass],
   templateUrl: './form-block.html',
   styleUrl: './form-block.scss',
 })

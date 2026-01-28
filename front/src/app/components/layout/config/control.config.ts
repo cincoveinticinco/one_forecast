@@ -16,6 +16,7 @@ import { FileControl } from "../block/form-block/control/file-control/file-contr
 import { NumberControl } from "../block/form-block/control/number-control/number-control";
 import { CheckControl } from "../block/form-block/control/check-control/check-control";
 import { ToggleControl } from "../block/form-block/control/toggle-control/toggle-control";
+import { ActionControl } from "../block/form-block/control/action-control/action-control";
 
 export const CONTROL_CONFIG: ControlConfig = {
     address: AddressControl,
@@ -35,6 +36,7 @@ export const CONTROL_CONFIG: ControlConfig = {
     select: SelectControl,
     selectdisabled: SelectDisabledControl,
     textarea: TextareaControl,
+    action: ActionControl,
 }
 
 export const CONTROL_CONFIG_TOKEN = new InjectionToken<string>('control_config');

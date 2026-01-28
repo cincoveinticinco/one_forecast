@@ -115,17 +115,12 @@ export const WORKFLOW_STEPS_FORM_LAYOUT: ILayout = {
                 {
                     field_type: 'toggle',
                     config: {
-                        classes: 'md:col-4 sm:col-12',
+                        classes: 'md:col-1 sm:col-12',
                         disabled: true,
                         key: 'approve',
                         label: 'Approve',
                         value: null,
                         hidden: true,
-                        validators: [
-                            {
-                                validator_type: 'required',
-                            }
-                        ],
                         effects: [
                             {
                                 effect_type: 'hidden',
@@ -139,17 +134,12 @@ export const WORKFLOW_STEPS_FORM_LAYOUT: ILayout = {
                 {
                     field_type: 'toggle',
                     config: {
-                        classes: 'md:col-4 sm:col-12',
+                        classes: 'md:col-1 sm:col-12',
                         disabled: true,
                         key: 'reject',
                         label: 'Reject',
                         value: null,
                         hidden: true,
-                        validators: [
-                            {
-                                validator_type: 'required',
-                            }
-                        ],
                         effects: [
                             {
                                 effect_type: 'hidden',
@@ -163,17 +153,12 @@ export const WORKFLOW_STEPS_FORM_LAYOUT: ILayout = {
                 {
                     field_type: 'toggle',
                     config: {
-                        classes: 'md:col-4 sm:col-12',
+                        classes: 'md:col-1 sm:col-12',
                         disabled: true,
                         key: 'return',
                         label: 'Return',
                         value: null,
                         hidden: true,
-                        validators: [
-                            {
-                                validator_type: 'required',
-                            }
-                        ],
                         effects: [
                             {
                                 effect_type: 'hidden',
@@ -273,6 +258,356 @@ export const WORKFLOW_STEPS_FORM_LAYOUT: ILayout = {
                 },
             ]
         },
+        {
+            field_type: 'section',
+            config: {
+                key: 'actions',
+                classes: '',
+                label: 'Actions',
+            },
+            children: [
+                {
+                    field_type: 'section',
+                    config: {
+                        key: 'on_enter',
+                        classes: '',
+                        label: '',
+                    },
+                    children: [
+                        {
+                            field_type: 'toggle',
+                            config: {
+                                classes: 'md:col-12 sm:col-12 py-0',
+                                disabled: false,
+                                key: 'action',
+                                label: 'On enter',
+                                value: null,
+                                hidden: false,
+                            },
+                        },
+                        {
+                            field_type: 'action',
+                            config: {
+                                classes: 'md:col-12 sm:col-12',
+                                key: 'on_enter_action',
+                                hidden: true,
+                                disabled: true,
+                                label: 'Actions list',
+                                value: null,
+                                validators: [
+                                    {
+                                        validator_type: 'required',
+                                    }
+                                ],
+                                options: [
+                                    {
+                                        label: 'Email',
+                                        value: 'email'
+                                    }
+                                ],
+                                effects: [
+                                    {
+                                        effect_type: 'hidden',
+                                        key_control: 'on_enter_action',
+                                        target_path: 'actions.on_enter.action',
+                                        value_path: [true]
+                                    }
+                                ],
+                                children: [
+                                    {
+                                        field_type: 'array',
+                                        config: {
+                                            key: 'actions',
+                                            disabled: false,
+                                            blocks: [
+                                            ],
+                                            has_initial: true,
+                                            add_config: {
+                                                show_add: false,
+                                                show_index: true,
+                                                can_remove_first: true
+                                            } 
+                                        }
+                                    },
+                                ]
+                            }
+                        },
+                    ]
+                },
+                {
+                    field_type: 'section',
+                    config: {
+                        key: 'on_exit',
+                        classes: '',
+                        label: '',
+                    },
+                    children: [
+                        {
+                            field_type: 'toggle',
+                            config: {
+                                classes: 'md:col-12 sm:col-12 py-0',
+                                disabled: false,
+                                key: 'action',
+                                label: 'On exit',
+                                value: null,
+                                hidden: false,
+                            },
+                        },
+                        {
+                            field_type: 'action',
+                            config: {
+                                classes: 'md:col-12 sm:col-12',
+                                key: 'on_exit_action',
+                                hidden: true,
+                                disabled: true,
+                                label: 'Actions list',
+                                value: null,
+                                validators: [
+                                    {
+                                        validator_type: 'required',
+                                    }
+                                ],
+                                options: [
+                                    {
+                                        label: 'Email',
+                                        value: 'email'
+                                    }
+                                ],
+                                effects: [
+                                    {
+                                        effect_type: 'hidden',
+                                        key_control: 'on_exit_action',
+                                        target_path: 'actions.on_exit.action',
+                                        value_path: [true]
+                                    }
+                                ],
+                                children: [
+                                    {
+                                        field_type: 'array',
+                                        config: {
+                                            key: 'actions',
+                                            disabled: false,
+                                            blocks: [
+                                            ],
+                                            has_initial: true,
+                                            add_config: {
+                                                show_add: false,
+                                                show_index: true,
+                                                can_remove_first: true
+                                            } 
+                                        }
+                                    },
+                                ]
+                            }
+                        },
+                    ]
+                },
+                {
+                    field_type: 'section',
+                    config: {
+                        key: 'on_approve',
+                        classes: '',
+                        label: '',
+                    },
+                    children: [
+                        {
+                            field_type: 'toggle',
+                            config: {
+                                classes: 'md:col-12 sm:col-12 py-0',
+                                disabled: false,
+                                key: 'action',
+                                label: 'On approve',
+                                value: null,
+                                hidden: false,
+                            },
+                        },
+                        {
+                            field_type: 'action',
+                            config: {
+                                classes: 'md:col-12 sm:col-12',
+                                key: 'on_approve_action',
+                                hidden: true,
+                                disabled: true,
+                                label: 'Actions list',
+                                value: null,
+                                validators: [
+                                    {
+                                        validator_type: 'required',
+                                    }
+                                ],
+                                options: [
+                                    {
+                                        label: 'Email',
+                                        value: 'email'
+                                    }
+                                ],
+                                effects: [
+                                    {
+                                        effect_type: 'hidden',
+                                        key_control: 'on_approve_action',
+                                        target_path: 'actions.on_approve.action',
+                                        value_path: [true]
+                                    }
+                                ],
+                                children: [
+                                    {
+                                        field_type: 'array',
+                                        config: {
+                                            key: 'actions',
+                                            disabled: false,
+                                            blocks: [
+                                            ],
+                                            has_initial: true,
+                                            add_config: {
+                                                show_add: false,
+                                                show_index: true,
+                                                can_remove_first: true
+                                            } 
+                                        }
+                                    },
+                                ]
+                            }
+                        },
+                    ]
+                },
+                {
+                    field_type: 'section',
+                    config: {
+                        key: 'on_reject',
+                        classes: '',
+                        label: '',
+                    },
+                    children: [
+                        {
+                            field_type: 'toggle',
+                            config: {
+                                classes: 'md:col-12 sm:col-12 py-0',
+                                disabled: false,
+                                key: 'action',
+                                label: 'On reject',
+                                value: null,
+                                hidden: false,
+                            },
+                        },
+                        {
+                            field_type: 'action',
+                            config: {
+                                classes: 'md:col-12 sm:col-12',
+                                key: 'on_reject_action',
+                                hidden: true,
+                                disabled: true,
+                                label: 'Actions list',
+                                value: null,
+                                validators: [
+                                    {
+                                        validator_type: 'required',
+                                    }
+                                ],
+                                options: [
+                                    {
+                                        label: 'Email',
+                                        value: 'email'
+                                    }
+                                ],
+                                effects: [
+                                    {
+                                        effect_type: 'hidden',
+                                        key_control: 'on_reject_action',
+                                        target_path: 'actions.on_reject.action',
+                                        value_path: [true]
+                                    }
+                                ],
+                                children: [
+                                    {
+                                        field_type: 'array',
+                                        config: {
+                                            key: 'actions',
+                                            disabled: false,
+                                            blocks: [
+                                            ],
+                                            has_initial: true,
+                                            add_config: {
+                                                show_add: false,
+                                                show_index: true,
+                                                can_remove_first: true
+                                            } 
+                                        }
+                                    },
+                                ]
+                            }
+                        },
+                    ]
+                },
+                {
+                    field_type: 'section',
+                    config: {
+                        key: 'on_return',
+                        classes: '',
+                        label: '',
+                    },
+                    children: [
+                        {
+                            field_type: 'toggle',
+                            config: {
+                                classes: 'md:col-12 sm:col-12 py-0',
+                                disabled: false,
+                                key: 'action',
+                                label: 'On return',
+                                value: null,
+                                hidden: false,
+                            },
+                        },
+                        {
+                            field_type: 'action',
+                            config: {
+                                classes: 'md:col-12 sm:col-12',
+                                key: 'on_return_action',
+                                hidden: true,
+                                disabled: true,
+                                label: 'Actions list',
+                                value: null,
+                                validators: [
+                                    {
+                                        validator_type: 'required',
+                                    }
+                                ],
+                                options: [
+                                    {
+                                        label: 'Email',
+                                        value: 'email'
+                                    }
+                                ],
+                                effects: [
+                                    {
+                                        effect_type: 'hidden',
+                                        key_control: 'on_return_action',
+                                        target_path: 'actions.on_return.action',
+                                        value_path: [true]
+                                    }
+                                ],
+                                children: [
+                                    {
+                                        field_type: 'array',
+                                        config: {
+                                            key: 'actions',
+                                            disabled: false,
+                                            blocks: [
+                                            ],
+                                            has_initial: true,
+                                            add_config: {
+                                                show_add: false,
+                                                show_index: true,
+                                                can_remove_first: true
+                                            } 
+                                        }
+                                    },
+                                ]
+                            }
+                        },
+                    ]
+                },
+            ]
+        }
     ],
     action_config: {
         show_cancel: false,

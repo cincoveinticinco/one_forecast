@@ -5,6 +5,7 @@ import { TitleBlock } from "../block/title-block/title-block";
 import { TextBlock } from "../block/text-block/text-block";
 import { FormControlBlock } from "../block/form-control-block/form-control-block";
 import { MultipleBlock } from "../block/multiple-block/multiple-block";
+import { ActionBlock } from "../block/action-block/action-block";
 
 export const BLOCK_CONFIG: BlockConfig = {
     section: FormBlock,
@@ -28,6 +29,7 @@ export const BLOCK_CONFIG: BlockConfig = {
     creditcardnumber: FormControlBlock,
     file: FormControlBlock,
     multiple: MultipleBlock,
+    action: ActionBlock,
 }
 
 export const BLOCK_CONFIG_TOKEN = new InjectionToken<string>('BLOCK_CONFIG');

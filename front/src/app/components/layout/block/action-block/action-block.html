@@ -1,0 +1,19 @@
+@if (parentForm && config) {
+    <form [formGroup]="parentForm">
+        <app-control-block [block]="block"></app-control-block>
+    </form>
+}
+
+<!-- @if (!config.hidden && config.children && config.children.length > 0) {
+    <form [formGroup]="parentForm">
+        <div class="formgrid grid">
+            @if(ready) {
+                @for(child of config.children; track child.key) {
+                    <div id="{{child.id}}" class="{{child.config?.classes || 'col-12'}}" [ngClass]="child.config.hidden ? 'py-0' : 'py-2'">
+                        <app-block [block]="child"></app-block>
+                    </div>
+                }
+            }
+        </div>
+    </form>
+} -->
