@@ -3,6 +3,19 @@ class Api::V1::WorkflowStepsController < ApplicationController
   before_action :set_workflow, only: [ :index, :create ]
   before_action :set_workflow_step, only: [ :show, :update, :destroy ]
 
+  # GET /api/v1/workflow_steps/filter_options?tenant_id=XX
+  def filter_options
+    step_types = WorkflowStep.step_types.keys
+    form_templates = []
+    if params[:tenant_id].present?
+      form_templates = FormTemplate.where(tenant_id: params[:tenant_id]).select(:id, :name)
+    end
+    render json: {
+      step_types: step_types,
+      form_templates: form_templates.map { |ft| { id: ft.id, name: ft.name } }
+    }
+  end
+
   # GET /api/v1/workflows/:workflow_id/workflow_steps
   def index
     pagy, workflow_steps = pagy(
