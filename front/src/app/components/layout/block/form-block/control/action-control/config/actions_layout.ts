@@ -11,16 +11,24 @@ export const EMAIL_ACTION_LAYOUT: IBlock[] = [
     {
         field_type: 'array',
         config: {
-            key: 'recipients',
+            key: 'to',
             label: 'Recipients list',
             disabled: false,
             blocks: [
                 {
                     field_type: 'text',
                     config: {
+                        hidden: true,
+                        key: 'type',
+                        value: 'email'
+                    }
+                },
+                {
+                    field_type: 'text',
+                    config: {
                         classes: 'md:col-12 sm:col-12',
                         disabled: false,
-                        key: 'email',
+                        key: 'value',
                         label: 'Email',
                         type: 'text',
                         value: null,
@@ -72,6 +80,14 @@ export const EMAIL_ACTION_LAYOUT: IBlock[] = [
             label: 'Body',
             rows: 2,
             value: null
+        }
+    },
+    {
+        field_type: 'text',
+        config: {
+            hidden: true,
+            key: 'type',
+            value: 'email'
         }
     },
 ]

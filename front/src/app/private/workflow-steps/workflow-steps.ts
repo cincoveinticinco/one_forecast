@@ -86,10 +86,11 @@ export class WorkflowSteps extends DynamicTableBase implements OnInit {
   private create = async () => {
     const layout = cloneDeep(WORKFLOW_STEPS_FORM_LAYOUT);
     const create = async (body: {workflow_step: IWorkflowStep}) => {
-      await this.workflowStepsService.create(body.workflow_step, this.id);
+      console.log(body)
+      // await this.workflowStepsService.create(body.workflow_step, this.id);
       await this.getSteps();
       this.openToast('success', 'Workflow step created');
-      this.closeDialog();
+      // this.closeDialog();
     }
     this.dialog = {
       component: RenderFormLayout,

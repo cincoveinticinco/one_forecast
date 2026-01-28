@@ -61,7 +61,7 @@ export const WORKFLOW_STEPS_FORM_LAYOUT: ILayout = {
                     config: {
                         classes: 'md:col-6 sm:col-12',
                         disabled: false,
-                        key: 'order',
+                        key: 'order_index',
                         label: 'Order',
                         type: 'text',
                         value: null,
